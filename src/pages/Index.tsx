@@ -6,6 +6,8 @@ import Features from "@/components/Features";
 import PlantDiagnosis from "@/components/PlantDiagnosis";
 import EnvDashboard from "@/components/EnvDashboard";
 import Community from "@/components/Community";
+import Pricing from "@/components/Pricing";
+import Faq from "@/components/Faq";
 import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
@@ -19,6 +21,8 @@ const Index = () => {
         <PlantDiagnosis />
         <EnvDashboard />
         <Community />
+        <Pricing />
+        <Faq />
         <CtaSection />
       </main>
       <Footer />

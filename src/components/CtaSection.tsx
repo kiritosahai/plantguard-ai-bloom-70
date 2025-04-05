@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, ArrowRight } from "lucide-react";
 
 const CtaSection = () => {
   return (
@@ -37,10 +37,11 @@ const CtaSection = () => {
               </p>
               <div className="space-y-4">
                 <Button className="w-full" size="lg">
-                  Create Free Account
+                  Start Free Trial
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button variant="outline" className="w-full" size="lg">
-                  View Demo
+                <Button variant="outline" className="w-full" size="lg" onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}>
+                  View Pricing Plans
                 </Button>
               </div>
             </div>
