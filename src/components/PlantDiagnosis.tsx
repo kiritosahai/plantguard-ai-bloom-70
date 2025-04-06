@@ -1,12 +1,16 @@
-
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Upload, CheckCircle2, AlertCircle } from "lucide-react";
+import { Upload, CheckCircle2, AlertCircle, Camera } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/components/ui/use-toast";
 
 const PlantDiagnosis = () => {
   const [dragActive, setDragActive] = useState(false);
   const [previewStage, setPreviewStage] = useState<null | 'analyzing' | 'results'>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const isMobile = useIsMobile();
+  const { toast } = useToast();
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -23,6 +27,30 @@ const PlantDiagnosis = () => {
     e.stopPropagation();
     setDragActive(false);
     
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      handleFile(e.target.files[0]);
+    }
+  };
+
+  const handleFile = (file: File) => {
+    // Check file type
+    const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (!validTypes.includes(file.type)) {
+      toast({
+        title: "Unsupported file type",
+        description: "Please upload a JPG or PNG image.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     // Show demo analysis
     setPreviewStage("analyzing");
     setTimeout(() => {
@@ -30,15 +58,8 @@ const PlantDiagnosis = () => {
     }, 2000);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      // Show demo analysis
-      setPreviewStage("analyzing");
-      setTimeout(() => {
-        setPreviewStage("results");
-      }, 2000);
-    }
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
   };
 
   return (
@@ -78,26 +99,42 @@ const PlantDiagnosis = () => {
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
                   onDrop={handleDrop}
+                  onClick={isMobile ? triggerFileInput : undefined}
+                  role={isMobile ? "button" : undefined}
+                  aria-label={isMobile ? "Upload plant photo" : undefined}
+                  tabIndex={isMobile ? 0 : undefined}
                 >
                   <div className="mb-4 p-4 rounded-full bg-plantguard-green/10">
-                    <Upload className="h-10 w-10 text-plantguard-green" />
+                    {isMobile ? (
+                      <Camera className="h-10 w-10 text-plantguard-green" />
+                    ) : (
+                      <Upload className="h-10 w-10 text-plantguard-green" />
+                    )}
                   </div>
-                  <p className="mb-4 font-medium">Drag and drop a plant photo or click to upload</p>
+                  <p className="mb-4 font-medium">
+                    {isMobile 
+                      ? "Tap here to take a photo or upload from gallery" 
+                      : "Drag and drop a plant photo or click to upload"}
+                  </p>
                   <p className="text-sm text-muted-foreground mb-6">Supported formats: JPG, PNG</p>
-                  <Button 
-                    variant="outline" 
-                    className="relative"
-                    onClick={() => document.getElementById('file-upload')?.click()}
-                  >
-                    Select Photo
-                    <input 
-                      id="file-upload"
-                      type="file"
-                      className="absolute inset-0 w-full opacity-0 cursor-pointer" 
-                      accept="image/jpeg,image/png,image/jpg"
-                      onChange={handleChange}
-                    />
-                  </Button>
+                  {!isMobile && (
+                    <Button 
+                      variant="outline" 
+                      className="relative"
+                      onClick={triggerFileInput}
+                    >
+                      Select Photo
+                    </Button>
+                  )}
+                  <input 
+                    ref={fileInputRef}
+                    id="file-upload"
+                    type="file"
+                    className="hidden" 
+                    accept="image/jpeg,image/png,image/jpg"
+                    onChange={handleChange}
+                    capture={isMobile ? "environment" : undefined}
+                  />
                 </div>
               )}
               
