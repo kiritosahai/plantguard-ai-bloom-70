@@ -3,12 +3,20 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import PlantHeroImg from "../components/PlantHeroImg";
+import { useDiagnosis } from "@/context/DiagnosisContext";
 
 const Hero = () => {
+  const { triggerFileUpload } = useDiagnosis();
+
   const scrollToDiagnosis = () => {
     const element = document.getElementById('diagnosis');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      
+      // Trigger file upload after scrolling to diagnosis section
+      setTimeout(() => {
+        triggerFileUpload();
+      }, 800);
     }
   };
 
@@ -47,6 +55,7 @@ const Hero = () => {
                   Explore Features
                 </Button>
               </div>
+              
               <div className="mt-10 flex items-center space-x-4">
                 <div className="flex -space-x-2">
                   {[1, 2, 3, 4].map((i) => (

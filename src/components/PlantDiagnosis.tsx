@@ -1,10 +1,11 @@
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Upload, CheckCircle2, AlertCircle, Camera, Undo2, Clipboard } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/components/ui/use-toast";
+import { useDiagnosis } from "@/context/DiagnosisContext";
 
 const PlantDiagnosis = () => {
   const [dragActive, setDragActive] = useState(false);
@@ -12,6 +13,14 @@ const PlantDiagnosis = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useIsMobile();
   const { toast } = useToast();
+  const { setTriggerFileUpload } = useDiagnosis();
+
+  // Register the triggerFileInput function with the context
+  useEffect(() => {
+    setTriggerFileUpload(() => {
+      triggerFileInput();
+    });
+  }, [setTriggerFileUpload]);
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();

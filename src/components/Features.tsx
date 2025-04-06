@@ -2,14 +2,15 @@
 import React from "react";
 import { Camera, Cloud, Leaf, Sprout, Users, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useNavigate } from "react-router-dom";
+import { useDiagnosis } from "@/context/DiagnosisContext";
 
 const features = [
   {
     icon: <Camera className="h-8 w-8 text-plantguard-green" />,
     title: "AI Plant Identification",
     description: "Upload a photo and instantly identify plant species and detect diseases with our advanced AI technology.",
-    sectionId: "diagnosis"
+    sectionId: "diagnosis",
+    action: "triggerUpload"
   },
   {
     icon: <Sprout className="h-8 w-8 text-plantguard-green" />,
@@ -44,12 +45,20 @@ const features = [
 ];
 
 const Features = () => {
-  const navigate = useNavigate();
+  const { triggerFileUpload } = useDiagnosis();
 
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
+  const handleFeatureClick = (feature: typeof features[0]) => {
+    const element = document.getElementById(feature.sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      
+      // If it's the AI Plant Identification card, trigger file upload after scrolling
+      if (feature.action === "triggerUpload") {
+        // Give time for scrolling to complete before triggering file upload
+        setTimeout(() => {
+          triggerFileUpload();
+        }, 800);
+      }
     }
   };
 
@@ -68,11 +77,11 @@ const Features = () => {
             <Card 
               key={index} 
               className="feature-card hover:border-plantguard-green cursor-pointer transition-all hover:shadow-md"
-              onClick={() => scrollToSection(feature.sectionId)}
+              onClick={() => handleFeatureClick(feature)}
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
-                  scrollToSection(feature.sectionId);
+                  handleFeatureClick(feature);
                 }
               }}
               role="button"
