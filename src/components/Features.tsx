@@ -1,108 +1,102 @@
 
 import React from "react";
-import { Camera, Cloud, Leaf, Sprout, Users, Zap } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
+import { Card } from "@/components/ui/card";
+import { 
+  Plant, 
+  FlaskConical, 
+  BarChart3, 
+  Users, 
+  Zap, 
+  CloudSun 
+} from "lucide-react";
 import { useDiagnosis } from "@/context/DiagnosisContext";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const features = [
   {
-    icon: <Camera className="h-8 w-8 text-plantguard-green" />,
+    icon: Plant,
     title: "AI Plant Identification",
-    description: "Upload a photo and instantly identify plant species and detect diseases with our advanced AI technology.",
-    sectionId: "diagnosis",
-    action: "triggerUpload"
+    description: "Upload a photo to instantly recognize over 10,000 plant species with high accuracy.",
+    path: "/plant-identification",
+    isCameraFeature: true
   },
   {
-    icon: <Sprout className="h-8 w-8 text-plantguard-green" />,
-    title: "Personalized Care",
-    description: "Receive custom watering, sunlight, and fertilization recommendations for each of your plants.",
-    sectionId: "diagnosis"
+    icon: FlaskConical,
+    title: "Disease Diagnosis",
+    description: "Detect plant diseases and pests early with our advanced image recognition technology.",
+    path: "/disease-diagnosis",
+    isCameraFeature: true
   },
   {
-    icon: <Cloud className="h-8 w-8 text-plantguard-green" />,
-    title: "Environmental Monitoring",
-    description: "Track temperature, humidity, and other conditions affecting your plants' health.",
-    sectionId: "monitoring"
+    icon: BarChart3,
+    title: "Growth Monitoring",
+    description: "Track your plants' growth over time with data visualization and progress charts.",
+    path: "/monitoring",
+    isCameraFeature: false
   },
   {
-    icon: <Zap className="h-8 w-8 text-plantguard-green" />,
-    title: "Smart Alerts",
-    description: "Get proactive notifications about watering, disease risks, and environmental changes.",
-    sectionId: "monitoring"
+    icon: CloudSun,
+    title: "Environmental Analysis",
+    description: "Measure light, moisture, and temperature to create optimal growing conditions.",
+    path: "/monitoring",
+    isCameraFeature: false
   },
   {
-    icon: <Users className="h-8 w-8 text-plantguard-green" />,
-    title: "Community Support",
-    description: "Connect with plant experts and enthusiasts to share knowledge and get advice.",
-    sectionId: "community"
+    icon: Zap,
+    title: "Personalized Care Plans",
+    description: "Receive customized care instructions based on your plant's needs and environment.",
+    path: "/monitoring",
+    isCameraFeature: false
   },
   {
-    icon: <Leaf className="h-8 w-8 text-plantguard-green" />,
-    title: "Sustainable Gardening",
-    description: "Learn eco-friendly gardening practices to reduce resource usage and environmental impact.",
-    sectionId: "community"
+    icon: Users,
+    title: "Community & Expert Advice",
+    description: "Connect with other plant enthusiasts and get advice from horticulture experts.",
+    path: "/community",
+    isCameraFeature: false
   }
 ];
 
 const Features = () => {
+  const navigate = useNavigate();
   const { triggerFileUpload, setUseCameraMode } = useDiagnosis();
   const isMobile = useIsMobile();
 
-  const handleFeatureClick = (feature: typeof features[0]) => {
-    const element = document.getElementById(feature.sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-      
-      // If it's the AI Plant Identification card, trigger file upload after scrolling
-      if (feature.action === "triggerUpload") {
-        // Use camera mode on mobile devices
-        if (isMobile) {
-          setUseCameraMode(true);
-        }
-        
-        // Give time for scrolling to complete before triggering file upload
-        setTimeout(() => {
-          triggerFileUpload();
-        }, 800);
-      }
+  const handleFeatureClick = (path: string, isCameraFeature: boolean) => {
+    if (isMobile && isCameraFeature) {
+      setUseCameraMode(true);
     }
+    
+    navigate(path);
   };
 
   return (
     <section id="features" className="py-16 bg-gradient-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">AI-Powered Plant Care</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Powerful Plant Care Features</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            PlantGuard combines cutting-edge technology with plant science to keep your plants healthy and thriving.
+            All the tools you need to keep your plants healthy and thriving, powered by intelligent technology
           </p>
         </div>
-
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
             <Card 
-              key={index} 
-              className="feature-card hover:border-plantguard-green cursor-pointer transition-all hover:shadow-md"
-              onClick={() => handleFeatureClick(feature)}
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                  handleFeatureClick(feature);
-                }
-              }}
-              role="button"
-              aria-label={`Learn about ${feature.title}`}
+              key={index}
+              className="feature-card cursor-pointer"
+              onClick={() => handleFeatureClick(feature.path, feature.isCameraFeature)}
             >
-              <CardHeader>
-                <div className="mb-4 p-3 w-16 h-16 rounded-lg bg-plantguard-green/10 flex items-center justify-center">
-                  {feature.icon}
+              <div className="p-6">
+                <div className="w-12 h-12 bg-plantguard-green-light/30 rounded-full flex items-center justify-center mb-4">
+                  <feature.icon className="h-6 w-6 text-plantguard-green" />
                 </div>
-                <CardTitle className="text-xl">{feature.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-base">{feature.description}</CardDescription>
-              </CardContent>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">
+                  {feature.description}
+                </p>
+              </div>
             </Card>
           ))}
         </div>
