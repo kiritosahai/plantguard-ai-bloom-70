@@ -3,6 +3,7 @@ import React from "react";
 import { Camera, Cloud, Leaf, Sprout, Users, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useDiagnosis } from "@/context/DiagnosisContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const features = [
   {
@@ -45,7 +46,8 @@ const features = [
 ];
 
 const Features = () => {
-  const { triggerFileUpload } = useDiagnosis();
+  const { triggerFileUpload, setUseCameraMode } = useDiagnosis();
+  const isMobile = useIsMobile();
 
   const handleFeatureClick = (feature: typeof features[0]) => {
     const element = document.getElementById(feature.sectionId);
@@ -54,6 +56,11 @@ const Features = () => {
       
       // If it's the AI Plant Identification card, trigger file upload after scrolling
       if (feature.action === "triggerUpload") {
+        // Use camera mode on mobile devices
+        if (isMobile) {
+          setUseCameraMode(true);
+        }
+        
         // Give time for scrolling to complete before triggering file upload
         setTimeout(() => {
           triggerFileUpload();

@@ -4,14 +4,21 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import PlantHeroImg from "../components/PlantHeroImg";
 import { useDiagnosis } from "@/context/DiagnosisContext";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Hero = () => {
-  const { triggerFileUpload } = useDiagnosis();
+  const { triggerFileUpload, setUseCameraMode } = useDiagnosis();
+  const isMobile = useIsMobile();
 
   const scrollToDiagnosis = () => {
     const element = document.getElementById('diagnosis');
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
+      
+      // Set camera mode if on mobile
+      if (isMobile) {
+        setUseCameraMode(true);
+      }
       
       // Trigger file upload after scrolling to diagnosis section
       setTimeout(() => {

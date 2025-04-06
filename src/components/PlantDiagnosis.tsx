@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -13,14 +12,17 @@ const PlantDiagnosis = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useIsMobile();
   const { toast } = useToast();
-  const { setTriggerFileUpload } = useDiagnosis();
+  const { setTriggerFileUpload, useCameraMode, setUseCameraMode } = useDiagnosis();
 
-  // Register the triggerFileInput function with the context
   useEffect(() => {
     setTriggerFileUpload(() => {
       triggerFileInput();
     });
-  }, [setTriggerFileUpload]);
+    
+    return () => {
+      setUseCameraMode(false);
+    };
+  }, [setTriggerFileUpload, setUseCameraMode]);
 
   const handleDrag = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -47,10 +49,10 @@ const PlantDiagnosis = () => {
     if (e.target.files && e.target.files[0]) {
       handleFile(e.target.files[0]);
     }
+    setUseCameraMode(false);
   };
 
   const handleFile = (file: File) => {
-    // Check file type
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (!validTypes.includes(file.type)) {
       toast({
@@ -61,14 +63,12 @@ const PlantDiagnosis = () => {
       return;
     }
 
-    // Show success toast
     toast({
       title: "Image uploaded",
       description: "Analyzing your plant...",
       variant: "default",
     });
 
-    // Show demo analysis
     setPreviewStage("analyzing");
     setTimeout(() => {
       setPreviewStage("results");
@@ -76,7 +76,30 @@ const PlantDiagnosis = () => {
   };
 
   const triggerFileInput = () => {
-    fileInputRef.current?.click();
+    if (fileInputRef.current) {
+      if (useCameraMode && isMobile) {
+        fileInputRef.current.setAttribute('capture', 'environment');
+      } else {
+        fileInputRef.current.removeAttribute('capture');
+      }
+      fileInputRef.current.click();
+    }
+  };
+
+  const takePhoto = () => {
+    setUseCameraMode(true);
+    if (fileInputRef.current) {
+      fileInputRef.current.setAttribute('capture', 'environment');
+      fileInputRef.current.click();
+    }
+  };
+
+  const uploadFromGallery = () => {
+    setUseCameraMode(false);
+    if (fileInputRef.current) {
+      fileInputRef.current.removeAttribute('capture');
+      fileInputRef.current.click();
+    }
   };
 
   const copyToClipboard = (text: string) => {
@@ -137,33 +160,34 @@ Recommendations:
                   onDragLeave={handleDrag}
                   onDragOver={handleDrag}
                   onDrop={handleDrop}
-                  onClick={isMobile ? triggerFileInput : undefined}
-                  role={isMobile ? "button" : undefined}
-                  aria-label={isMobile ? "Upload plant photo" : undefined}
-                  tabIndex={isMobile ? 0 : undefined}
+                  role="button"
+                  aria-label="Upload plant photo"
+                  tabIndex={0}
                 >
                   <div className="mb-4 p-4 rounded-full bg-plantguard-green/10">
-                    {isMobile ? (
-                      <Camera className="h-10 w-10 text-plantguard-green" />
-                    ) : (
-                      <Upload className="h-10 w-10 text-plantguard-green" />
-                    )}
+                    <Camera className="h-10 w-10 text-plantguard-green" />
                   </div>
                   <p className="mb-4 font-medium">
-                    {isMobile 
-                      ? "Tap here to take a photo or upload from gallery" 
-                      : "Drag and drop a plant photo or click to upload"}
+                    Get an instant plant diagnosis
                   </p>
-                  <p className="text-sm text-muted-foreground mb-6">Supported formats: JPG, PNG</p>
-                  {!isMobile && (
+                  <p className="text-sm text-muted-foreground mb-6">Choose an option below</p>
+                  
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button 
+                      className="flex items-center gap-2"
+                      onClick={takePhoto}
+                    >
+                      <Camera className="h-4 w-4" /> Take Photo
+                    </Button>
                     <Button 
                       variant="outline" 
-                      className="relative"
-                      onClick={triggerFileInput}
+                      className="flex items-center gap-2"
+                      onClick={uploadFromGallery}
                     >
-                      Select Photo
+                      <Upload className="h-4 w-4" /> Upload Image
                     </Button>
-                  )}
+                  </div>
+                  
                   <input 
                     ref={fileInputRef}
                     id="file-upload"
@@ -171,7 +195,6 @@ Recommendations:
                     className="hidden" 
                     accept="image/jpeg,image/png,image/jpg"
                     onChange={handleChange}
-                    capture={isMobile ? "environment" : undefined}
                   />
                 </div>
               )}
