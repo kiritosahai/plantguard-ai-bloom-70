@@ -7,21 +7,49 @@ import { cn } from "@/lib/utils";
 const NavBar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setMobileMenuOpen(false);
+    }
+  };
+
   return (
     <header className="w-full py-4 px-4 sm:px-6 lg:px-8 border-b">
       <div className="flex items-center justify-between">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
           <Leaf className="w-6 h-6 text-plantguard-green" />
           <span className="text-xl font-serif font-semibold">PlantGuard</span>
         </div>
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center space-x-6">
-          <a href="#features" className="text-foreground hover:text-plantguard-green transition-colors">Features</a>
-          <a href="#diagnosis" className="text-foreground hover:text-plantguard-green transition-colors">Diagnosis</a>
-          <a href="#monitoring" className="text-foreground hover:text-plantguard-green transition-colors">Monitoring</a>
-          <a href="#community" className="text-foreground hover:text-plantguard-green transition-colors">Community</a>
-          <Button>Get Started</Button>
+          <button 
+            className="text-foreground hover:text-plantguard-green transition-colors"
+            onClick={() => scrollToSection('features')}
+          >
+            Features
+          </button>
+          <button 
+            className="text-foreground hover:text-plantguard-green transition-colors"
+            onClick={() => scrollToSection('diagnosis')}
+          >
+            Diagnosis
+          </button>
+          <button 
+            className="text-foreground hover:text-plantguard-green transition-colors"
+            onClick={() => scrollToSection('monitoring')}
+          >
+            Monitoring
+          </button>
+          <button 
+            className="text-foreground hover:text-plantguard-green transition-colors"
+            onClick={() => scrollToSection('community')}
+          >
+            Community
+          </button>
+          <Button onClick={() => scrollToSection('diagnosis')}>Get Started</Button>
         </nav>
 
         {/* Mobile Nav Toggle */}
@@ -36,35 +64,31 @@ const NavBar = () => {
         mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
       )}>
         <div className="flex flex-col space-y-4 pt-2 pb-4">
-          <a 
-            href="#features" 
+          <button 
             className="text-foreground hover:text-plantguard-green py-2" 
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => scrollToSection('features')}
           >
             Features
-          </a>
-          <a 
-            href="#diagnosis" 
+          </button>
+          <button 
             className="text-foreground hover:text-plantguard-green py-2" 
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => scrollToSection('diagnosis')}
           >
             Diagnosis
-          </a>
-          <a 
-            href="#monitoring" 
+          </button>
+          <button 
             className="text-foreground hover:text-plantguard-green py-2" 
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => scrollToSection('monitoring')}
           >
             Monitoring
-          </a>
-          <a 
-            href="#community" 
+          </button>
+          <button 
             className="text-foreground hover:text-plantguard-green py-2" 
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => scrollToSection('community')}
           >
             Community
-          </a>
-          <Button className="mt-2">Get Started</Button>
+          </button>
+          <Button className="mt-2" onClick={() => scrollToSection('diagnosis')}>Get Started</Button>
         </div>
       </div>
     </header>

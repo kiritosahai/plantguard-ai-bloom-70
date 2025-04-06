@@ -5,6 +5,13 @@ import { ArrowRight } from "lucide-react";
 import PlantHeroImg from "../components/PlantHeroImg";
 
 const Hero = () => {
+  const scrollToDiagnosis = () => {
+    const element = document.getElementById('diagnosis');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="leaf-pattern w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
@@ -18,11 +25,25 @@ const Hero = () => {
                 Identify diseases, monitor growth conditions, and receive personalized plant care recommendations from our AI technology.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="font-medium">
+                <Button 
+                  size="lg" 
+                  className="font-medium"
+                  onClick={scrollToDiagnosis}
+                >
                   Try Plant Diagnosis
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
-                <Button size="lg" variant="outline" className="text-plantguard-green border-plantguard-green">
+                <Button 
+                  size="lg" 
+                  variant="outline" 
+                  className="text-plantguard-green border-plantguard-green"
+                  onClick={() => {
+                    const featuresSection = document.getElementById('features');
+                    if (featuresSection) {
+                      featuresSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                >
                   Explore Features
                 </Button>
               </div>

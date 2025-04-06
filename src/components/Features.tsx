@@ -2,41 +2,57 @@
 import React from "react";
 import { Camera, Cloud, Leaf, Sprout, Users, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 
 const features = [
   {
     icon: <Camera className="h-8 w-8 text-plantguard-green" />,
     title: "AI Plant Identification",
-    description: "Upload a photo and instantly identify plant species and detect diseases with our advanced AI technology."
+    description: "Upload a photo and instantly identify plant species and detect diseases with our advanced AI technology.",
+    sectionId: "diagnosis"
   },
   {
     icon: <Sprout className="h-8 w-8 text-plantguard-green" />,
     title: "Personalized Care",
-    description: "Receive custom watering, sunlight, and fertilization recommendations for each of your plants."
+    description: "Receive custom watering, sunlight, and fertilization recommendations for each of your plants.",
+    sectionId: "diagnosis"
   },
   {
     icon: <Cloud className="h-8 w-8 text-plantguard-green" />,
     title: "Environmental Monitoring",
-    description: "Track temperature, humidity, and other conditions affecting your plants' health."
+    description: "Track temperature, humidity, and other conditions affecting your plants' health.",
+    sectionId: "monitoring"
   },
   {
     icon: <Zap className="h-8 w-8 text-plantguard-green" />,
     title: "Smart Alerts",
-    description: "Get proactive notifications about watering, disease risks, and environmental changes."
+    description: "Get proactive notifications about watering, disease risks, and environmental changes.",
+    sectionId: "monitoring"
   },
   {
     icon: <Users className="h-8 w-8 text-plantguard-green" />,
     title: "Community Support",
-    description: "Connect with plant experts and enthusiasts to share knowledge and get advice."
+    description: "Connect with plant experts and enthusiasts to share knowledge and get advice.",
+    sectionId: "community"
   },
   {
     icon: <Leaf className="h-8 w-8 text-plantguard-green" />,
     title: "Sustainable Gardening",
-    description: "Learn eco-friendly gardening practices to reduce resource usage and environmental impact."
+    description: "Learn eco-friendly gardening practices to reduce resource usage and environmental impact.",
+    sectionId: "community"
   }
 ];
 
 const Features = () => {
+  const navigate = useNavigate();
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section id="features" className="py-16 bg-gradient-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -51,7 +67,16 @@ const Features = () => {
           {features.map((feature, index) => (
             <Card 
               key={index} 
-              className="feature-card hover:border-plantguard-green"
+              className="feature-card hover:border-plantguard-green cursor-pointer transition-all hover:shadow-md"
+              onClick={() => scrollToSection(feature.sectionId)}
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  scrollToSection(feature.sectionId);
+                }
+              }}
+              role="button"
+              aria-label={`Learn about ${feature.title}`}
             >
               <CardHeader>
                 <div className="mb-4 p-3 w-16 h-16 rounded-lg bg-plantguard-green/10 flex items-center justify-center">

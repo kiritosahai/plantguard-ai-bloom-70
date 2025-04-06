@@ -1,7 +1,8 @@
+
 import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Upload, CheckCircle2, AlertCircle, Camera } from "lucide-react";
+import { Upload, CheckCircle2, AlertCircle, Camera, Undo2, Clipboard } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -51,6 +52,13 @@ const PlantDiagnosis = () => {
       return;
     }
 
+    // Show success toast
+    toast({
+      title: "Image uploaded",
+      description: "Analyzing your plant...",
+      variant: "default",
+    });
+
     // Show demo analysis
     setPreviewStage("analyzing");
     setTimeout(() => {
@@ -60,6 +68,27 @@ const PlantDiagnosis = () => {
 
   const triggerFileInput = () => {
     fileInputRef.current?.click();
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied to clipboard",
+      description: "Report details have been copied to your clipboard.",
+      variant: "default",
+    });
+  };
+
+  const generateReportText = () => {
+    return `Plant Analysis Report:
+Species: Monstera Deliciosa
+Health Status: Needs Attention
+Issue: Early signs of leaf spot disease
+Recommendations:
+- Isolate the plant from others to prevent spread
+- Remove affected leaves with sterilized scissors
+- Decrease watering frequency to prevent moisture
+- Apply neem oil solution once weekly for 3 weeks`;
   };
 
   return (
@@ -180,10 +209,19 @@ const PlantDiagnosis = () => {
                   </div>
                   
                   <div className="flex justify-end mt-auto">
-                    <Button variant="ghost" className="mr-2" onClick={() => setPreviewStage(null)}>
-                      Upload New Photo
+                    <Button 
+                      variant="ghost" 
+                      className="mr-2 flex items-center gap-1" 
+                      onClick={() => setPreviewStage(null)}
+                    >
+                      <Undo2 className="h-4 w-4" /> New Photo
                     </Button>
-                    <Button>View Detailed Report</Button>
+                    <Button 
+                      className="flex items-center gap-1"
+                      onClick={() => copyToClipboard(generateReportText())}
+                    >
+                      <Clipboard className="h-4 w-4" /> Copy Report
+                    </Button>
                   </div>
                 </div>
               )}
