@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
@@ -8,16 +8,43 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
-import { User, Lock } from "lucide-react";
+import { User, Lock, Mail } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const SignIn = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would authenticate the user
-    // For now, we'll just redirect to the home page
-    navigate("/");
+    setLoading(true);
+    
+    // Simulate authentication
+    setTimeout(() => {
+      setLoading(false);
+      toast({
+        title: "Welcome back!",
+        description: "You have successfully signed in.",
+      });
+      navigate("/");
+    }, 1500);
+  };
+
+  const handleResetPassword = () => {
+    if (!email) {
+      toast({
+        title: "Email required",
+        description: "Please enter your email address first.",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    toast({
+      title: "Password reset email sent",
+      description: "Check your inbox for instructions to reset your password.",
+    });
   };
 
   return (
@@ -37,22 +64,28 @@ const SignIn = () => {
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input 
                       id="email" 
                       placeholder="name@example.com" 
                       type="email" 
                       className="pl-10" 
                       required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <Label htmlFor="password">Password</Label>
-                    <Link to="/reset-password" className="text-sm text-plantguard-green hover:underline">
+                    <button 
+                      type="button"
+                      onClick={handleResetPassword}
+                      className="text-sm text-plantguard-green hover:underline"
+                    >
                       Forgot password?
-                    </Link>
+                    </button>
                   </div>
                   <div className="relative">
                     <Lock className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
@@ -69,7 +102,9 @@ const SignIn = () => {
                   <Checkbox id="remember" />
                   <Label htmlFor="remember" className="text-sm font-normal">Remember me</Label>
                 </div>
-                <Button type="submit" className="w-full">Sign In</Button>
+                <Button type="submit" className="w-full" disabled={loading}>
+                  {loading ? "Signing in..." : "Sign In"}
+                </Button>
               </form>
               
               <div className="mt-6 text-center text-sm">

@@ -14,6 +14,7 @@ import CommunityPage from "./pages/Community";
 import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Subscription from "./pages/Subscription";
+import PlantEncyclopedia from "./pages/PlantEncyclopedia";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
             <Route path="/sign-in" element={<SignIn />} />
             <Route path="/sign-up" element={<SignUp />} />
             <Route path="/subscription" element={<Subscription />} />
+            <Route path="/plant-encyclopedia" element={<PlantEncyclopedia />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
