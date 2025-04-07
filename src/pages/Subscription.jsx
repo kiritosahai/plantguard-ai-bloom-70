@@ -1,165 +1,157 @@
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Check } from "lucide-react";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
-const plans = [
+const pricingTiers = [
   {
-    id: "free",
     name: "Free",
-    price: "$0",
-    period: "forever",
+    description: "Essential tools for casual plant enthusiasts",
+    price: "₹0",
+    duration: "",
     features: [
       "Basic plant identification",
-      "Limited disease diagnosis",
-      "Care reminders",
-      "Access to community forums",
-      "5 plant profiles"
+      "Limited disease diagnostics",
+      "Up to 5 plants in your collection",
+      "Community forum access"
     ],
-    buttonText: "Get Started",
-    popular: false
+    limitations: [
+      "Limited to 3 identifications per day",
+      "Basic care recommendations only",
+      "No priority support"
+    ]
   },
   {
-    id: "premium",
-    name: "Premium",
-    price: "$9.99",
-    period: "per month",
+    name: "Pro",
+    description: "Advanced features for serious plant lovers",
+    price: "₹50",
+    duration: "/month",
     features: [
       "Unlimited plant identification",
-      "Advanced disease detection",
-      "Personalized care plans",
-      "Environmental monitoring",
-      "Unlimited plant profiles",
-      "Expert consultation access",
-      "Premium community features"
+      "Advanced disease diagnostics",
+      "Unlimited plant collection",
+      "Detailed care instructions",
+      "Seasonal reminders",
+      "Growth tracking",
+      "Priority support",
+      "Ad-free experience",
+      "Premium community badge"
     ],
-    buttonText: "Select Plan",
-    popular: true
+    limitations: []
   },
   {
-    id: "business",
-    name: "Business",
-    price: "$29.99",
-    period: "per month",
+    name: "Premium",
+    description: "Everything you need for ultimate plant care",
+    price: "₹450",
+    duration: "/year",
     features: [
-      "All Premium features",
-      "Multi-user access",
-      "Advanced analytics & reports",
-      "API access",
-      "Bulk plant processing",
-      "Commercial use license",
-      "Dedicated support",
-      "Custom integrations"
+      "All Pro features included",
+      "Expert consultation (2 per month)",
+      "Exclusive workshops and webinars",
+      "Early access to new features",
+      "Family account (up to 3 users)",
+      "Personalized seasonal care plan",
+      "Offline mode",
+      "Export plant data"
     ],
-    buttonText: "Contact Sales",
-    popular: false
+    limitations: []
   }
 ];
 
 const Subscription = () => {
-  const [selectedPlan, setSelectedPlan] = useState("premium");
+  const { toast } = useToast();
   const navigate = useNavigate();
   
-  const handleSubscribe = () => {
-    // In a real app, this would process the subscription
-    // For now, we'll just redirect to the home page
-    navigate("/");
+  const handleSubscribe = (tier) => {
+    toast({
+      title: "Subscription Selected",
+      description: `You selected the ${tier} plan. Redirecting to payment...`,
+      duration: 3000,
+    });
+    
+    // In a real app, this would redirect to a payment gateway
+    setTimeout(() => {
+      navigate("/");
+    }, 2000);
   };
   
   return (
     <div className="min-h-screen flex flex-col">
       <NavBar />
-      <main className="flex-grow bg-gradient-to-b from-white to-plantguard-blue-light/10">
-        <div className="max-w-7xl mx-auto px-4 py-16">
+      <main className="flex-grow py-16 bg-gradient-to-b from-white to-plantguard-green-light/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h1 className="text-3xl md:text-4xl font-bold font-serif text-plantguard-green-dark mb-4">
-              Choose Your Subscription Plan
+            <h1 className="text-3xl md:text-4xl font-bold text-plantguard-green-dark mb-4">
+              Choose Your Plan
             </h1>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Select the plan that best fits your needs and start enhancing your plant care experience
+              Select the perfect subscription plan to unlock the full potential of your plants
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {plans.map((plan) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {pricingTiers.map((tier, index) => (
               <Card 
-                key={plan.id}
-                className={`relative ${
-                  selectedPlan === plan.id 
-                    ? "border-plantguard-green ring-2 ring-plantguard-green/20" 
-                    : "border-border hover:border-plantguard-green/50 cursor-pointer"
-                }`}
-                onClick={() => setSelectedPlan(plan.id)}
+                key={index} 
+                className={`flex flex-col ${tier.name === "Pro" ? "border-plantguard-green md:scale-105 shadow-md" : ""}`}
               >
-                {plan.popular && (
-                  <div className="absolute -top-3 left-0 right-0 mx-auto w-fit rounded-full bg-plantguard-green px-3 py-1 text-xs font-medium text-white">
-                    Most Popular
-                  </div>
-                )}
                 <CardHeader>
-                  <CardTitle className="flex flex-col items-center">
-                    <span className="text-xl">{plan.name}</span>
-                    <div className="mt-2 flex items-baseline">
-                      <span className="text-3xl font-bold">{plan.price}</span>
-                      <span className="ml-1 text-sm text-muted-foreground">/{plan.period}</span>
-                    </div>
-                  </CardTitle>
+                  <CardTitle className="text-xl">{tier.name}</CardTitle>
+                  <CardDescription>{tier.description}</CardDescription>
+                  <div className="mt-4">
+                    <span className="text-3xl font-bold">{tier.price}</span>
+                    <span className="text-muted-foreground">{tier.duration}</span>
+                  </div>
                 </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3 mb-6">
-                    {plan.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-center">
-                        <Check className="h-4 w-4 text-plantguard-green mr-2 flex-shrink-0" />
-                        <span className="text-sm">{feature}</span>
+                <CardContent className="flex-grow">
+                  <ul className="space-y-2">
+                    {tier.features.map((feature, i) => (
+                      <li key={i} className="flex items-start">
+                        <Check className="h-5 w-5 text-plantguard-green mr-2 flex-shrink-0" />
+                        <span>{feature}</span>
                       </li>
                     ))}
                   </ul>
+                  
+                  {tier.limitations.length > 0 && (
+                    <div className="mt-4 pt-4 border-t">
+                      <p className="text-sm text-muted-foreground mb-2">Limitations:</p>
+                      <ul className="space-y-2">
+                        {tier.limitations.map((limitation, i) => (
+                          <li key={i} className="text-sm text-muted-foreground">
+                            • {limitation}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="pt-4 mt-auto">
                   <Button 
-                    variant={plan.id === "free" ? "outline" : "default"}
-                    className="w-full"
-                    onClick={handleSubscribe}
+                    className={`w-full ${tier.name === "Pro" ? "" : "variant-outline"}`}
+                    variant={tier.name === "Pro" ? "default" : "outline"}
+                    onClick={() => handleSubscribe(tier.name)}
                   >
-                    {plan.buttonText}
+                    {tier.name === "Free" ? "Get Started" : "Subscribe Now"}
                   </Button>
                 </CardFooter>
               </Card>
             ))}
           </div>
           
-          <div className="bg-white p-6 rounded-xl shadow-sm border">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Frequently Asked Questions</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div>
-                <h3 className="font-medium mb-2">Can I change my plan later?</h3>
-                <p className="text-sm text-muted-foreground">
-                  Yes, you can upgrade or downgrade your plan at any time from your account settings.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-medium mb-2">Is there a free trial?</h3>
-                <p className="text-sm text-muted-foreground">
-                  All paid plans include a 14-day free trial. No credit card required to start.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-medium mb-2">How can I cancel my subscription?</h3>
-                <p className="text-sm text-muted-foreground">
-                  You can cancel your subscription at any time from your account settings.
-                </p>
-              </div>
-              <div>
-                <h3 className="font-medium mb-2">Do you offer refunds?</h3>
-                <p className="text-sm text-muted-foreground">
-                  We offer a 30-day money-back guarantee on all paid plans.
-                </p>
-              </div>
-            </div>
+          <div className="mt-12 text-center">
+            <p className="text-sm text-muted-foreground">
+              All plans include a 7-day free trial. Cancel anytime. No credit card required for free plan.
+            </p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Have questions? Contact us at <a href="mailto:sahai.kuahgar@plantguard.com" className="underline">sahai.kuahgar@plantguard.com</a>
+              or call <a href="tel:+919876543210" className="underline">+91 9876 543 210</a>
+            </p>
           </div>
         </div>
       </main>

@@ -8,7 +8,9 @@ import {
   BarChart3, 
   Users, 
   Zap, 
-  CloudSun 
+  CloudSun,
+  Flower2,
+  Sprout
 } from "lucide-react";
 import { useDiagnosis } from "@/context/DiagnosisContext";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -55,6 +57,20 @@ const features = [
     description: "Connect with other plant enthusiasts and get advice from horticulture experts.",
     path: "/community",
     isCameraFeature: false
+  },
+  {
+    icon: Flower2,
+    title: "Plant Encyclopedia",
+    description: "Access our comprehensive database of plant species with detailed care instructions.",
+    path: "/plant-encyclopedia",
+    isCameraFeature: false
+  },
+  {
+    icon: Sprout,
+    title: "Seasonal Plant Calendar",
+    description: "Know the best time to plant, prune, and fertilize your plants based on your region.",
+    path: "/plant-encyclopedia",
+    isCameraFeature: false
   }
 ];
 
@@ -81,7 +97,7 @@ const Features = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <Card 
               key={index}

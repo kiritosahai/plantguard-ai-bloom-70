@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
-import { Mail } from "lucide-react";
+import { Mail, Phone } from "lucide-react";
 
 const EmailSubscribe = () => {
   const [email, setEmail] = useState("");
@@ -33,7 +33,7 @@ const EmailSubscribe = () => {
       <p className="text-sm text-muted-foreground mb-4">
         Get plant care tips, disease alerts, and seasonal advice delivered to your inbox.
       </p>
-      <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
+      <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2 mb-4">
         <Input
           type="email"
           placeholder="Enter your email"
@@ -46,6 +46,25 @@ const EmailSubscribe = () => {
           {loading ? "Subscribing..." : "Subscribe"}
         </Button>
       </form>
+      
+      <div className="mt-4 pt-4 border-t border-muted">
+        <div className="flex flex-col sm:flex-row sm:justify-between gap-3">
+          <div>
+            <h4 className="font-medium text-sm mb-1">Contact Us</h4>
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Mail className="w-4 h-4 mr-2" />
+              <a href="mailto:sahai.kuahgar@plantguard.com">sahai.kuahgar@plantguard.com</a>
+            </div>
+          </div>
+          <div>
+            <h4 className="font-medium text-sm mb-1">Customer Support</h4>
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Phone className="w-4 h-4 mr-2" />
+              <a href="tel:+919876543210">+91 9876 543 210</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
