@@ -60,7 +60,7 @@ const EmailSubscribe = () => {
             <h4 className="font-medium text-sm mb-1">Customer Support</h4>
             <div className="flex items-center text-sm text-muted-foreground">
               <Phone className="w-4 h-4 mr-2" />
-              <a href="tel:+919876543210">+91 9876 543 210</a>
+              <a href="tel:+918976543210">+91 8976 543 210</a>
             </div>
           </div>
         </div>

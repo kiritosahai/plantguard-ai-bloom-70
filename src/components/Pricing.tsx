@@ -6,7 +6,7 @@ import { Check } from "lucide-react";
 const pricingPlans = [
   {
     name: "Free",
-    price: "$0",
+    price: "₹0",
     period: "forever",
     description: "Perfect for beginners getting started with plant care",
     features: [
@@ -21,7 +21,7 @@ const pricingPlans = [
   },
   {
     name: "Premium",
-    price: "$9.99",
+    price: "₹50",
     period: "per month",
     description: "Advanced features for serious plant enthusiasts",
     features: [
@@ -39,7 +39,7 @@ const pricingPlans = [
   },
   {
     name: "Business",
-    price: "$29.99",
+    price: "₹499",
     period: "per month",
     description: "For professionals and commercial growers",
     features: [
