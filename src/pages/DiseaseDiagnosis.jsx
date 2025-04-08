@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
-import { Button } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { FileImage, Camera, Activity, Loader2 } from "lucide-react";
 import { useDiagnosis } from "@/context/DiagnosisContext";
 import { useIsMobile } from "@/hooks/use-mobile";
