@@ -3,7 +3,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { 
-  Plant, 
+  Leaf, 
   FlaskConical, 
   BarChart3, 
   Users, 
@@ -15,7 +15,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 
 const features = [
   {
-    icon: Plant,
+    icon: Leaf,
     title: "AI Plant Identification",
     description: "Upload a photo to instantly recognize over 10,000 plant species with high accuracy.",
     path: "/plant-identification",
