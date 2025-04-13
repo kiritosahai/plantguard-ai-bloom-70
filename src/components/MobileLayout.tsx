@@ -2,7 +2,7 @@
 import React from "react";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
-import { SidebarInset } from "@/components/ui/sidebar";
+import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 
 interface MobileLayoutProps {
   children: React.ReactNode;
@@ -11,7 +11,10 @@ interface MobileLayoutProps {
 const MobileLayout: React.FC<MobileLayoutProps> = ({ children }) => {
   return (
     <SidebarInset className="flex flex-col">
-      <NavBar />
+      <div className="flex items-center p-2 bg-background border-b">
+        <SidebarTrigger className="mr-2" />
+        <NavBar />
+      </div>
       <main className="flex-grow">
         {children}
       </main>
