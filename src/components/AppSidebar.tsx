@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Leaf, ImagePlus, Plant, Activity, FileStack, Users, Droplet } from "lucide-react";
+import { Leaf, ImagePlus, Seedling, Activity, FileStack, Users, Droplet } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function AppSidebar() {
@@ -31,7 +31,7 @@ export function AppSidebar() {
     },
     {
       title: "Plant Identification",
-      icon: Plant,
+      icon: Seedling,
       path: "/plant-identification",
     },
     {
