@@ -5,6 +5,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { DiagnosisProvider } from "./context/DiagnosisContext";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import AppSidebar from "./components/AppSidebar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PlantIdentification from "./pages/PlantIdentification";
@@ -23,24 +25,31 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <DiagnosisProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/plant-identification" element={<PlantIdentification />} />
-            <Route path="/disease-diagnosis" element={<DiseaseDiagnosis />} />
-            <Route path="/monitoring" element={<Monitoring />} />
-            <Route path="/community" element={<CommunityPage />} />
-            <Route path="/sign-in" element={<SignIn />} />
-            <Route path="/sign-up" element={<SignUp />} />
-            <Route path="/subscription" element={<Subscription />} />
-            <Route path="/plant-encyclopedia" element={<PlantEncyclopedia />} />
-            <Route path="/plant-analyzer" element={<PlantAnalyzer />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <SidebarProvider>
+          <div className="flex min-h-screen w-full">
+            <AppSidebar />
+            <div className="flex-1">
+              <Toaster />
+              <Sonner />
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/plant-identification" element={<PlantIdentification />} />
+                  <Route path="/disease-diagnosis" element={<DiseaseDiagnosis />} />
+                  <Route path="/monitoring" element={<Monitoring />} />
+                  <Route path="/community" element={<CommunityPage />} />
+                  <Route path="/sign-in" element={<SignIn />} />
+                  <Route path="/sign-up" element={<SignUp />} />
+                  <Route path="/subscription" element={<Subscription />} />
+                  <Route path="/plant-encyclopedia" element={<PlantEncyclopedia />} />
+                  <Route path="/plant-analyzer" element={<PlantAnalyzer />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </BrowserRouter>
+            </div>
+          </div>
+        </SidebarProvider>
       </DiagnosisProvider>
     </TooltipProvider>
   </QueryClientProvider>
