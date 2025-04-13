@@ -1,5 +1,6 @@
 
 import React from "react";
+import { Link } from "react-router-dom";
 import { Leaf, Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -25,10 +26,16 @@ const Footer = () => {
               <div className="flex items-center text-sm">
                 <Phone className="h-4 w-4 mr-2 text-plantguard-green" />
                 <span>+1 (555) 123-4567</span>
+                <span className="mx-2">|</span>
+                <span>812-721-2469</span>
               </div>
               <div className="flex items-center text-sm">
                 <Mail className="h-4 w-4 mr-2 text-plantguard-green" />
                 <span>hello@plantguard.com</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <Mail className="h-4 w-4 mr-2 text-plantguard-green" />
+                <span>sahai.kushagra4@gmail.com</span>
               </div>
             </div>
           </div>
@@ -36,24 +43,24 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold mb-5">Features</h3>
             <ul className="space-y-3 text-muted-foreground">
-              <li><a href="#features" className="hover:text-plantguard-green transition-colors">AI Identification</a></li>
-              <li><a href="#diagnosis" className="hover:text-plantguard-green transition-colors">Disease Detection</a></li>
-              <li><a href="#monitoring" className="hover:text-plantguard-green transition-colors">Environmental Monitoring</a></li>
-              <li><a href="#community" className="hover:text-plantguard-green transition-colors">Community & Support</a></li>
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">Care Reminders</a></li>
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">Plant Library</a></li>
+              <li><Link to="/ai-identification" className="hover:text-plantguard-green transition-colors">AI Identification</Link></li>
+              <li><Link to="/disease-detection" className="hover:text-plantguard-green transition-colors">Disease Detection</Link></li>
+              <li><Link to="/environmental-monitoring" className="hover:text-plantguard-green transition-colors">Environmental Monitoring</Link></li>
+              <li><Link to="/community-support" className="hover:text-plantguard-green transition-colors">Community & Support</Link></li>
+              <li><Link to="/care-reminders" className="hover:text-plantguard-green transition-colors">Care Reminders</Link></li>
+              <li><Link to="/plant-library" className="hover:text-plantguard-green transition-colors">Plant Library</Link></li>
             </ul>
           </div>
 
           <div>
             <h3 className="font-semibold mb-5">Resources</h3>
             <ul className="space-y-3 text-muted-foreground">
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">Plant Care Guides</a></li>
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">Knowledge Base</a></li>
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">API Documentation</a></li>
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">Support Center</a></li>
-              <li><a href="#" className="hover:text-plantguard-green transition-colors">Contact Us</a></li>
+              <li><Link to="/blog" className="hover:text-plantguard-green transition-colors">Blog</Link></li>
+              <li><Link to="/plant-care-guides" className="hover:text-plantguard-green transition-colors">Plant Care Guides</Link></li>
+              <li><Link to="/knowledge-base" className="hover:text-plantguard-green transition-colors">Knowledge Base</Link></li>
+              <li><Link to="/api-documentation" className="hover:text-plantguard-green transition-colors">API Documentation</Link></li>
+              <li><Link to="/support-center" className="hover:text-plantguard-green transition-colors">Support Center</Link></li>
+              <li><Link to="/contact-us" className="hover:text-plantguard-green transition-colors">Contact Us</Link></li>
             </ul>
           </div>
 

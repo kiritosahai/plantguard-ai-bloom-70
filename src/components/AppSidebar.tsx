@@ -15,7 +15,23 @@ import {
   SidebarTrigger,
   useSidebar
 } from "@/components/ui/sidebar";
-import { Leaf, ImagePlus, Sprout, Activity, FileStack, Users, Droplet, ChevronLeft } from "lucide-react";
+import { 
+  Leaf, 
+  ImagePlus, 
+  Sprout, 
+  Activity, 
+  FileStack, 
+  Users, 
+  Droplet, 
+  ChevronLeft,
+  BookOpen,
+  Bug,
+  Bell,
+  MessageSquare,
+  FileText,
+  LifeBuoy,
+  Mail
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function AppSidebar() {
@@ -26,7 +42,7 @@ export function AppSidebar() {
     return location.pathname === path;
   };
 
-  const menuItems = [
+  const mainMenuItems = [
     {
       title: "Home",
       icon: Leaf,
@@ -64,6 +80,72 @@ export function AppSidebar() {
     },
   ];
 
+  const featureMenuItems = [
+    {
+      title: "AI Identification",
+      icon: Sprout,
+      path: "/ai-identification",
+    },
+    {
+      title: "Disease Detection",
+      icon: Bug,
+      path: "/disease-detection",
+    },
+    {
+      title: "Environmental Monitoring",
+      icon: Droplet,
+      path: "/environmental-monitoring",
+    },
+    {
+      title: "Community Support",
+      icon: Users,
+      path: "/community-support",
+    },
+    {
+      title: "Care Reminders",
+      icon: Bell,
+      path: "/care-reminders",
+    },
+    {
+      title: "Plant Library",
+      icon: FileStack,
+      path: "/plant-library",
+    },
+  ];
+
+  const resourceMenuItems = [
+    {
+      title: "Blog",
+      icon: FileText,
+      path: "/blog",
+    },
+    {
+      title: "Care Guides",
+      icon: BookOpen,
+      path: "/plant-care-guides",
+    },
+    {
+      title: "Knowledge Base",
+      icon: FileStack,
+      path: "/knowledge-base",
+    },
+    {
+      title: "API Docs",
+      icon: FileText,
+      path: "/api-documentation",
+    },
+    {
+      title: "Support",
+      icon: LifeBuoy,
+      path: "/support-center",
+    },
+    {
+      title: "Contact Us",
+      icon: Mail,
+      path: "/contact-us",
+    },
+  ];
+
   return (
     <Sidebar variant="floating" collapsible="icon">
       <SidebarHeader>
@@ -85,10 +167,60 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupLabel>Main Navigation</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {menuItems.map((item) => (
+              {mainMenuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isActive(item.path)}
+                    tooltip={item.title}
+                  >
+                    <Link to={item.path} className={cn(
+                      "flex items-center",
+                      isActive(item.path) && "text-plantguard-green"
+                    )}>
+                      <item.icon className="h-5 w-5" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Features</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {featureMenuItems.map((item) => (
+                <SidebarMenuItem key={item.title}>
+                  <SidebarMenuButton 
+                    asChild 
+                    isActive={isActive(item.path)}
+                    tooltip={item.title}
+                  >
+                    <Link to={item.path} className={cn(
+                      "flex items-center",
+                      isActive(item.path) && "text-plantguard-green"
+                    )}>
+                      <item.icon className="h-5 w-5" />
+                      <span>{item.title}</span>
+                    </Link>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        <SidebarGroup>
+          <SidebarGroupLabel>Resources</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {resourceMenuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild 

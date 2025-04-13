@@ -18,6 +18,18 @@ import SignUp from "./pages/SignUp";
 import Subscription from "./pages/Subscription";
 import PlantEncyclopedia from "./pages/PlantEncyclopedia";
 import PlantAnalyzer from "./pages/PlantAnalyzer";
+import AiIdentification from "./pages/AiIdentification";
+import DiseaseDetection from "./pages/DiseaseDetection";
+import EnvironmentalMonitoring from "./pages/EnvironmentalMonitoring";
+import CommunitySupport from "./pages/CommunitySupport";
+import CareReminders from "./pages/CareReminders";
+import PlantLibrary from "./pages/PlantLibrary";
+import Blog from "./pages/Blog";
+import PlantCareGuides from "./pages/PlantCareGuides";
+import KnowledgeBase from "./pages/KnowledgeBase";
+import ApiDocumentation from "./pages/ApiDocumentation";
+import SupportCenter from "./pages/SupportCenter";
+import ContactUs from "./pages/ContactUs";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +55,21 @@ const App = () => (
                   <Route path="/subscription" element={<Subscription />} />
                   <Route path="/plant-encyclopedia" element={<PlantEncyclopedia />} />
                   <Route path="/plant-analyzer" element={<PlantAnalyzer />} />
+                  
+                  {/* New Routes */}
+                  <Route path="/ai-identification" element={<AiIdentification />} />
+                  <Route path="/disease-detection" element={<DiseaseDetection />} />
+                  <Route path="/environmental-monitoring" element={<EnvironmentalMonitoring />} />
+                  <Route path="/community-support" element={<CommunitySupport />} />
+                  <Route path="/care-reminders" element={<CareReminders />} />
+                  <Route path="/plant-library" element={<PlantLibrary />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/plant-care-guides" element={<PlantCareGuides />} />
+                  <Route path="/knowledge-base" element={<KnowledgeBase />} />
+                  <Route path="/api-documentation" element={<ApiDocumentation />} />
+                  <Route path="/support-center" element={<SupportCenter />} />
+                  <Route path="/contact-us" element={<ContactUs />} />
+                  
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
