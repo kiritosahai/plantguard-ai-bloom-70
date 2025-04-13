@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Leaf, Menu, X, User, BookOpen } from "lucide-react";
+import { Leaf, Menu, X, User, BookOpen, ImagePlus } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NavBar = () => {
@@ -60,6 +60,15 @@ const NavBar = () => {
             <div className="flex items-center">
               <BookOpen className="h-4 w-4 mr-1" />
               Encyclopedia
+            </div>
+          </Link>
+          <Link 
+            to="/plant-analyzer"
+            className="text-foreground hover:text-plantguard-green transition-colors"
+          >
+            <div className="flex items-center">
+              <ImagePlus className="h-4 w-4 mr-1" />
+              Analyzer
             </div>
           </Link>
           <Link 
@@ -123,6 +132,14 @@ const NavBar = () => {
           >
             <BookOpen className="h-4 w-4 mr-1" />
             Encyclopedia
+          </Link>
+          <Link 
+            to="/plant-analyzer"
+            className="text-foreground hover:text-plantguard-green py-2 flex items-center"
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            <ImagePlus className="h-4 w-4 mr-1" />
+            Analyzer
           </Link>
           <Link 
             to="/community"

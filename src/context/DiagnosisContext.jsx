@@ -12,17 +12,15 @@ export const DiagnosisProvider = ({ children }) => {
   const [triggerFileUpload, setTriggerFileUploadState] = useState(() => {});
   const [useCameraMode, setUseCameraMode] = useState(false);
 
-  const setTriggerFileUpload = (callback) => {
-    setTriggerFileUploadState(() => callback);
-  };
-
   return (
-    <DiagnosisContext.Provider value={{ 
-      triggerFileUpload, 
-      setTriggerFileUpload,
-      useCameraMode,
-      setUseCameraMode
-    }}>
+    <DiagnosisContext.Provider
+      value={{
+        triggerFileUpload,
+        setTriggerFileUpload: setTriggerFileUploadState,
+        useCameraMode,
+        setUseCameraMode,
+      }}
+    >
       {children}
     </DiagnosisContext.Provider>
   );

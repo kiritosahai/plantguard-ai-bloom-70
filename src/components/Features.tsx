@@ -8,7 +8,10 @@ import {
   BarChart3, 
   Users, 
   Zap, 
-  CloudSun 
+  CloudSun,
+  Flower2,
+  Sprout,
+  ImagePlus
 } from "lucide-react";
 import { useDiagnosis } from "@/context/DiagnosisContext";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -26,6 +29,13 @@ const features = [
     title: "Disease Diagnosis",
     description: "Detect plant diseases and pests early with our advanced image recognition technology.",
     path: "/disease-diagnosis",
+    isCameraFeature: true
+  },
+  {
+    icon: ImagePlus,
+    title: "Plant Analyzer",
+    description: "All-in-one tool to analyze plants, diagnose issues, and get detailed care recommendations.",
+    path: "/plant-analyzer",
     isCameraFeature: true
   },
   {
@@ -55,6 +65,13 @@ const features = [
     description: "Connect with other plant enthusiasts and get advice from horticulture experts.",
     path: "/community",
     isCameraFeature: false
+  },
+  {
+    icon: Flower2,
+    title: "Plant Encyclopedia",
+    description: "Access our comprehensive database of plant species with detailed care instructions.",
+    path: "/plant-encyclopedia",
+    isCameraFeature: false
   }
 ];
 
@@ -81,11 +98,11 @@ const Features = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, index) => (
             <Card 
               key={index}
-              className="feature-card cursor-pointer"
+              className="feature-card cursor-pointer hover:border-plantguard-green hover:shadow-md transition-all duration-300"
               onClick={() => handleFeatureClick(feature.path, feature.isCameraFeature)}
             >
               <div className="p-6">

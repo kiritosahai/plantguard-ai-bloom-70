@@ -5,7 +5,7 @@ interface DiagnosisContextType {
   triggerFileUpload: () => void;
   setTriggerFileUpload: (callback: () => void) => void;
   useCameraMode: boolean;
-  setUseCameraMode: (useCamera: boolean) => void;
+  setUseCameraMode: (mode: boolean) => void;
 }
 
 const DiagnosisContext = createContext<DiagnosisContextType>({
@@ -17,19 +17,17 @@ const DiagnosisContext = createContext<DiagnosisContextType>({
 
 export const DiagnosisProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [triggerFileUpload, setTriggerFileUploadState] = useState<() => void>(() => {});
-  const [useCameraMode, setUseCameraMode] = useState<boolean>(false);
-
-  const setTriggerFileUpload = (callback: () => void) => {
-    setTriggerFileUploadState(() => callback);
-  };
+  const [useCameraMode, setUseCameraMode] = useState(false);
 
   return (
-    <DiagnosisContext.Provider value={{ 
-      triggerFileUpload, 
-      setTriggerFileUpload,
-      useCameraMode,
-      setUseCameraMode
-    }}>
+    <DiagnosisContext.Provider
+      value={{
+        triggerFileUpload,
+        setTriggerFileUpload: setTriggerFileUploadState,
+        useCameraMode,
+        setUseCameraMode,
+      }}
+    >
       {children}
     </DiagnosisContext.Provider>
   );
