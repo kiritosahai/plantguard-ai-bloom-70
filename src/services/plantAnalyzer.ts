@@ -15,51 +15,37 @@ export interface AnalysisResult {
 }
 
 export const analyzeImage = async (imageFile: File): Promise<AnalysisResult> => {
-  // Simulate API call with a delay
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // In a real implementation, this would be an actual API call to a backend service
-      // For this demo, we'll randomly select a plant and potentially a disease from our database
-      
-      // 95% chance of detecting a plant
-      const plantDetected = Math.random() < 0.95;
-      
-      if (!plantDetected) {
-        resolve({ plant_detected: false });
-        return;
-      }
+  // In a real implementation, you would send the image to an actual plant identification API
+  const formData = new FormData();
+  formData.append('image', imageFile);
 
-      // Randomly select a plant from our database
-      const randomPlantIndex = Math.floor(Math.random() * plantDatabase.length);
-      const selectedPlant = plantDatabase[randomPlantIndex];
-      
-      // 50% chance of detecting a disease
-      const diseaseDetected = Math.random() < 0.5;
-      let diseaseDetails = null;
-      let diseaseName = null;
-      
-      if (diseaseDetected) {
-        const randomDiseaseIndex = Math.floor(Math.random() * diseaseDatabase.length);
-        const selectedDisease = diseaseDatabase[randomDiseaseIndex];
-        diseaseDetails = selectedDisease;
-        diseaseName = selectedDisease.disease_name;
-      }
-      
-      // Generate a random confidence score between 0.7 and 0.99
-      const confidence = 0.7 + Math.random() * 0.29;
-      
-      resolve({
-        plant_detected: true,
-        species: selectedPlant.species,
-        common_name: selectedPlant.common_name,
-        water_requirement: selectedPlant.water_requirement,
-        water_amount_ml_per_day: selectedPlant.water_amount_ml_per_day,
-        disease_detected: diseaseDetected,
-        disease_name: diseaseName || undefined,
-        disease_details: diseaseDetails || undefined,
-        plant_details: selectedPlant,
-        confidence: parseFloat(confidence.toFixed(2))
-      });
-    }, 2000); // 2-second delay to simulate processing
-  });
+  try {
+    // Replace with your actual plant identification API endpoint
+    const response = await fetch('https://your-plant-api.com/identify', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!response.ok) {
+      throw new Error('Plant identification failed');
+    }
+
+    const data = await response.json();
+
+    return {
+      plant_detected: data.plant_detected,
+      species: data.species,
+      common_name: data.common_name,
+      water_requirement: data.water_requirement,
+      water_amount_ml_per_day: data.water_amount_ml_per_day,
+      disease_detected: data.disease_detected,
+      disease_name: data.disease_name,
+      disease_details: data.disease_details,
+      plant_details: data.plant_details,
+      confidence: data.confidence
+    };
+  } catch (error) {
+    console.error('Error analyzing image:', error);
+    return { plant_detected: false };
+  }
 };
