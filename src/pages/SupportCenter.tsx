@@ -120,7 +120,7 @@ const SupportCenter = () => {
                 <div>
                   <h4 className="font-semibold mb-1">How do I sync my smart devices?</h4>
                   <p className="text-sm text-muted-foreground">
-                    Go to Settings > Connected Devices and follow the pairing instructions for your specific device.
+                    Go to Settings &gt; Connected Devices and follow the pairing instructions for your specific device.
                   </p>
                 </div>
                 
