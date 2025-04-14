@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { analyzePlantImage } from "@/services/plantAnalyzer";
+import { analyzeImage } from "@/services/plantAnalyzer";
 import MobileLayout from "@/components/MobileLayout";
 import ImageGallery from "@/components/plant-analyzer/ImageGallery";
 
@@ -66,7 +66,14 @@ const PlantAnalyzer: React.FC = () => {
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
-    input.onchange = (e) => handleFileChange(e as React.ChangeEvent<HTMLInputElement>);
+    input.onchange = (e) => {
+      // Fix the type casting here
+      if (e.target instanceof HTMLInputElement && e.target.files) {
+        handleFileChange({
+          target: e.target
+        } as React.ChangeEvent<HTMLInputElement>);
+      }
+    };
     input.click();
   };
   
@@ -82,7 +89,7 @@ const PlantAnalyzer: React.FC = () => {
     }
   };
 
-  const analyzeImage = async () => {
+  const analyzeSelectedImage = async () => {
     if (images.length === 0 || selectedImageIndex >= images.length) {
       toast({
         title: "No image selected",
@@ -108,12 +115,39 @@ const PlantAnalyzer: React.FC = () => {
       // Create a File object instead of a Blob
       const file = new File([ab], "plant-image.jpg", { type: mimeString });
       
-      const result = await analyzePlantImage(file);
-      setAnalysisResult(result);
+      const result = await analyzeImage(file);
+      
+      // Map the result to our expected format
+      const mappedResult: AnalysisResult = {
+        confidence: result.confidence || 0,
+        plant: result.plant_details ? {
+          name: result.plant_details.common_name || '',
+          scientific_name: result.plant_details.species || '',
+          family: result.plant_details.family || '',
+          description: result.plant_details.description || '',
+          soilType: result.plant_details.soilType,
+          growthHabit: result.plant_details.growthHabit,
+          care_instructions: {
+            watering: result.water_requirement || '',
+            sunlight: result.plant_details.sunlight_needs || '',
+            temperature: result.plant_details.temperature_range || '',
+            fertilizing: result.plant_details.fertilizer_needs || ''
+          }
+        } : undefined,
+        disease: result.disease_details ? {
+          name: result.disease_name || '',
+          description: result.disease_details.description || '',
+          severity: result.disease_details.severity || '',
+          treatments: result.disease_details.treatments || [],
+          preventions: result.disease_details.preventions || []
+        } : undefined
+      };
+      
+      setAnalysisResult(mappedResult);
       
       toast({
         title: "Analysis complete",
-        description: `Identified as ${result.plant?.name || result.disease?.name} with ${(result.confidence * 100).toFixed(1)}% confidence`,
+        description: `Identified as ${mappedResult.plant?.name || mappedResult.disease?.name} with ${(mappedResult.confidence * 100).toFixed(1)}% confidence`,
       });
     } catch (error) {
       toast({
@@ -158,7 +192,7 @@ const PlantAnalyzer: React.FC = () => {
                       </div>
                       
                       <Button 
-                        onClick={analyzeImage} 
+                        onClick={analyzeSelectedImage} 
                         disabled={isAnalyzing}
                         className="w-full"
                       >

@@ -1,4 +1,3 @@
-
 import React from "react";
 import ResourceLayout from "@/components/ResourceLayout";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,7 +10,8 @@ import {
   Bug, 
   Sprout, 
   Sparkles,
-  ThumbsUp
+  ThumbsUp,
+  Droplet
 } from "lucide-react";
 
 const KnowledgeBase = () => {
