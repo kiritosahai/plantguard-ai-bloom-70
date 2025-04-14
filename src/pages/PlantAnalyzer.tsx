@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,35 +7,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { analyzeImage } from "@/services/plantAnalyzer";
 import MobileLayout from "@/components/MobileLayout";
 import ImageGallery from "@/components/plant-analyzer/ImageGallery";
-
-// Define proper types
-interface PlantData {
-  name: string;
-  scientific_name: string;
-  family: string;
-  description: string;
-  care_instructions: {
-    watering: string;
-    sunlight: string;
-    temperature: string;
-    fertilizing: string;
-  };
-  // Add missing properties
-  soilType?: string;
-  growthHabit?: string;
-}
-
-interface DiseaseData {
-  name: string;
-  description: string;
-  severity: string;
-  treatments: string[];
-  preventions: string[];
-}
+import { PlantData, DiseaseData } from "@/data/plantsData";
 
 interface AnalysisResult {
-  plant?: PlantData;
-  disease?: DiseaseData;
+  plant?: Partial<PlantData>;
+  disease?: Partial<DiseaseData>;
   confidence: number;
 }
 
@@ -67,7 +42,6 @@ const PlantAnalyzer: React.FC = () => {
     input.type = 'file';
     input.accept = 'image/*';
     input.onchange = (e) => {
-      // Fix the type casting here
       if (e.target instanceof HTMLInputElement && e.target.files) {
         handleFileChange({
           target: e.target
@@ -101,7 +75,6 @@ const PlantAnalyzer: React.FC = () => {
 
     setIsAnalyzing(true);
     try {
-      // Convert base64 to blob/file
       const imageBase64 = images[selectedImageIndex];
       const byteString = atob(imageBase64.split(',')[1]);
       const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
@@ -112,34 +85,28 @@ const PlantAnalyzer: React.FC = () => {
         ia[i] = byteString.charCodeAt(i);
       }
       
-      // Create a File object instead of a Blob
       const file = new File([ab], "plant-image.jpg", { type: mimeString });
       
       const result = await analyzeImage(file);
       
-      // Map the result to our expected format
       const mappedResult: AnalysisResult = {
         confidence: result.confidence || 0,
         plant: result.plant_details ? {
-          name: result.plant_details.common_name || '',
-          scientific_name: result.plant_details.species || '',
-          family: result.plant_details.family || '',
+          species: result.plant_details.species || '',
+          common_name: result.plant_details.common_name || '',
+          water_requirement: result.water_requirement || 'Low',
+          water_amount_ml_per_day: 0,
+          light_requirement: 'Low',
+          humidity_preference: 'Low',
           description: result.plant_details.description || '',
-          soilType: result.plant_details.soilType,
-          growthHabit: result.plant_details.growthHabit,
-          care_instructions: {
-            watering: result.water_requirement || '',
-            sunlight: result.plant_details.sunlight_needs || '',
-            temperature: result.plant_details.temperature_range || '',
-            fertilizing: result.plant_details.fertilizer_needs || ''
-          }
+          care_tips: []
         } : undefined,
         disease: result.disease_details ? {
-          name: result.disease_name || '',
+          disease_name: result.disease_name || '',
           description: result.disease_details.description || '',
-          severity: result.disease_details.severity || '',
+          symptoms: result.disease_details.symptoms || [],
           treatments: result.disease_details.treatments || [],
-          preventions: result.disease_details.preventions || []
+          prevention: result.disease_details.preventions || []
         } : undefined
       };
       
@@ -147,7 +114,7 @@ const PlantAnalyzer: React.FC = () => {
       
       toast({
         title: "Analysis complete",
-        description: `Identified as ${mappedResult.plant?.name || mappedResult.disease?.name} with ${(mappedResult.confidence * 100).toFixed(1)}% confidence`,
+        description: `Identified as ${mappedResult.plant?.common_name || mappedResult.disease?.disease_name} with ${(mappedResult.confidence * 100).toFixed(1)}% confidence`,
       });
     } catch (error) {
       toast({
@@ -216,24 +183,16 @@ const PlantAnalyzer: React.FC = () => {
                         <CardContent className="pt-6 space-y-4">
                           <h2 className="text-xl font-semibold">Plant Information</h2>
                           <div className="space-y-2">
-                            <p><span className="font-semibold">Name:</span> {analysisResult.plant.name}</p>
-                            <p><span className="font-semibold">Scientific Name:</span> {analysisResult.plant.scientific_name}</p>
-                            <p><span className="font-semibold">Family:</span> {analysisResult.plant.family}</p>
+                            <p><span className="font-semibold">Name:</span> {analysisResult.plant.common_name}</p>
+                            <p><span className="font-semibold">Scientific Name:</span> {analysisResult.plant.species}</p>
                             <p><span className="font-semibold">Description:</span> {analysisResult.plant.description}</p>
-                            {analysisResult.plant.soilType && (
-                              <p><span className="font-semibold">Soil Type:</span> {analysisResult.plant.soilType}</p>
-                            )}
-                            {analysisResult.plant.growthHabit && (
-                              <p><span className="font-semibold">Growth Habit:</span> {analysisResult.plant.growthHabit}</p>
-                            )}
                           </div>
                           
                           <h3 className="text-lg font-semibold mt-4">Care Instructions</h3>
                           <div className="space-y-2">
-                            <p><span className="font-semibold">Watering:</span> {analysisResult.plant.care_instructions.watering}</p>
-                            <p><span className="font-semibold">Sunlight:</span> {analysisResult.plant.care_instructions.sunlight}</p>
-                            <p><span className="font-semibold">Temperature:</span> {analysisResult.plant.care_instructions.temperature}</p>
-                            <p><span className="font-semibold">Fertilizing:</span> {analysisResult.plant.care_instructions.fertilizing}</p>
+                            <p><span className="font-semibold">Watering:</span> {analysisResult.plant.water_requirement}</p>
+                            <p><span className="font-semibold">Sunlight:</span> {analysisResult.plant.light_requirement}</p>
+                            <p><span className="font-semibold">Humidity:</span> {analysisResult.plant.humidity_preference}</p>
                           </div>
                         </CardContent>
                       </Card>
@@ -244,9 +203,8 @@ const PlantAnalyzer: React.FC = () => {
                         <CardContent className="pt-6 space-y-4">
                           <h2 className="text-xl font-semibold">Disease Information</h2>
                           <div className="space-y-2">
-                            <p><span className="font-semibold">Name:</span> {analysisResult.disease.name}</p>
+                            <p><span className="font-semibold">Name:</span> {analysisResult.disease.disease_name}</p>
                             <p><span className="font-semibold">Description:</span> {analysisResult.disease.description}</p>
-                            <p><span className="font-semibold">Severity:</span> {analysisResult.disease.severity}</p>
                           </div>
                           
                           <h3 className="text-lg font-semibold mt-4">Treatments</h3>
