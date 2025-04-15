@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { analyzeImage } from "@/services/plantAnalyzer";
+import { analyzeImage, AnalysisResult as ApiAnalysisResult } from "@/services/plantAnalyzer";
 import { PlantData, DiseaseData } from "@/data/plantsData";
 
 interface AnalysisResult {
@@ -49,12 +49,15 @@ const AnalysisSection: React.FC<AnalysisSectionProps> = ({
         plant: result.plant_details ? {
           species: result.plant_details.species || '',
           common_name: result.plant_details.common_name || '',
-          water_requirement: result.water_requirement || 'Low',
-          water_amount_ml_per_day: 0,
-          light_requirement: 'Low',
-          humidity_preference: 'Low',
           description: result.plant_details.description || '',
-          care_tips: []
+          water_requirement: result.plant_details.water_requirement,
+          water_amount_ml_per_day: result.plant_details.water_amount_ml_per_day,
+          light_requirement: result.plant_details.light_requirement,
+          humidity_preference: result.plant_details.humidity_preference,
+          care_tips: result.plant_details.care_tips,
+          mature_size: result.plant_details.mature_size,
+          propagation_methods: result.plant_details.propagation_methods,
+          common_issues: result.plant_details.common_issues
         } : undefined,
         disease: result.disease_details ? {
           disease_name: result.disease_details.disease_name || '',

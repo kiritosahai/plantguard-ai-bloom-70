@@ -108,7 +108,7 @@ const mapToPlantData = (suggestion: any): PlantData => {
     light_requirement: 'Medium',
     humidity_preference: 'Medium',
     care_tips: extractCareTips(suggestion.plant_details),
-    growth_rate: 'Medium',
+    // Removed 'growth_rate' as it's not in the PlantData interface
     mature_size: 'Medium',
     propagation_methods: ['Seeds', 'Cuttings'],
     common_issues: []
