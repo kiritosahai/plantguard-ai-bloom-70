@@ -105,12 +105,14 @@ const mapToPlantData = (suggestion: any): PlantData => {
     description: suggestion.plant_details?.wiki_description?.value || '',
     water_requirement: determineWaterRequirement(suggestion.plant_details?.watering),
     water_amount_ml_per_day: calculateWaterAmount(suggestion.plant_details?.watering),
-    light_requirement: 'Moderate', // Default value as Plant.id doesn't provide this directly
-    humidity_preference: 'Moderate', // Default value as Plant.id doesn't provide this directly
+    // Fixed type error here: changed "Moderate" to "Medium"
+    light_requirement: 'Medium', 
+    // Fixed type error here: changed "Moderate" to "Medium"
+    humidity_preference: 'Medium',
     care_tips: extractCareTips(suggestion.plant_details),
-    growth_rate: 'Medium', // Default value
-    mature_size: 'Medium', // Default value
-    propagation_methods: ['Seeds', 'Cuttings'], // Default values
+    growth_rate: 'Medium',
+    mature_size: 'Medium',
+    propagation_methods: ['Seeds', 'Cuttings'],
     common_issues: []
   };
 };
@@ -158,14 +160,14 @@ const detectDisease = (suggestion: any): DiseaseData | undefined => {
     return undefined;
   }
 
+  // Fixed the property names to match the DiseaseData interface
   return {
     disease_name: suggestion.disease_details.name || "Unknown Issue",
     description: suggestion.disease_details.description || "",
-    severity: suggestion.disease_details.severity || "Medium",
+    // Removed the severity property as it doesn't exist in DiseaseData
     treatments: suggestion.disease_details.treatment || [],
     symptoms: suggestion.disease_details.symptoms || [],
     prevention: suggestion.disease_details.prevention || [],
     affected_parts: suggestion.disease_details.affected_parts || []
   };
 };
-
