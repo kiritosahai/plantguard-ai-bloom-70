@@ -8,6 +8,9 @@ export interface PlantData {
   humidity_preference: "Low" | "Medium" | "High";
   description: string;
   care_tips: string[];
+  mature_size: string;
+  propagation_methods: string[];
+  common_issues: string[];
 }
 
 export interface DiseaseData {
@@ -32,7 +35,10 @@ export const plantDatabase: PlantData[] = [
       "Rotate occasionally for even growth",
       "Wipe leaves to remove dust",
       "Avoid moving frequently as they dislike change"
-    ]
+    ],
+    mature_size: "6-10 feet tall indoors",
+    propagation_methods: ["Stem cuttings", "Air layering"],
+    common_issues: ["Leaf drop", "Brown spots", "Root rot"]
   },
   {
     species: "Aloe vera",
@@ -47,7 +53,10 @@ export const plantDatabase: PlantData[] = [
       "Provide bright, indirect sunlight",
       "Use well-draining soil mix",
       "Protect from frost in winter"
-    ]
+    ],
+    mature_size: "1-2 feet tall",
+    propagation_methods: ["Offsets", "Division"],
+    common_issues: ["Overwatering", "Sunburn", "Pest infestations"]
   },
   {
     species: "Monstera deliciosa",
@@ -62,7 +71,10 @@ export const plantDatabase: PlantData[] = [
       "Provide indirect light",
       "Support with a moss pole as it grows",
       "Mist regularly for increased humidity"
-    ]
+    ],
+    mature_size: "3-8 feet tall indoors",
+    propagation_methods: ["Stem cuttings", "Air layering"],
+    common_issues: ["Yellowing leaves", "Root rot", "Lack of fenestration"]
   },
   {
     species: "Sansevieria trifasciata",
@@ -77,7 +89,10 @@ export const plantDatabase: PlantData[] = [
       "Can tolerate low light conditions",
       "Avoid overwatering to prevent root rot",
       "Rarely needs repotting"
-    ]
+    ],
+    mature_size: "1-4 feet tall",
+    propagation_methods: ["Division", "Leaf cuttings"],
+    common_issues: ["Overwatering", "Leaf damage", "Mealybugs"]
   },
   {
     species: "Spathiphyllum wallisii",
@@ -92,7 +107,10 @@ export const plantDatabase: PlantData[] = [
       "Can thrive in low light conditions",
       "Drooping leaves indicate need for water",
       "Mist regularly to maintain humidity"
-    ]
+    ],
+    mature_size: "1-3 feet tall",
+    propagation_methods: ["Division"],
+    common_issues: ["Brown leaf tips", "Yellow leaves", "Failure to bloom"]
   }
 ];
 

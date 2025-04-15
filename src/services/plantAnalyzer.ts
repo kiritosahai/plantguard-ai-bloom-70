@@ -1,4 +1,3 @@
-
 import { plantDatabase, diseaseDatabase, PlantData, DiseaseData } from "@/data/plantsData";
 
 export interface AnalysisResult {
@@ -101,14 +100,12 @@ const mapToPlantData = (suggestion: any): PlantData => {
   return {
     species: suggestion.plant_details?.scientific_name || suggestion.plant_name,
     common_name: suggestion.plant_details?.common_names?.[0] || suggestion.plant_name,
-    // Removed 'family' as it's not in the PlantData interface
     description: suggestion.plant_details?.wiki_description?.value || '',
     water_requirement: determineWaterRequirement(suggestion.plant_details?.watering),
     water_amount_ml_per_day: calculateWaterAmount(suggestion.plant_details?.watering),
     light_requirement: 'Medium',
     humidity_preference: 'Medium',
     care_tips: extractCareTips(suggestion.plant_details),
-    // Removed 'growth_rate' as it's not in the PlantData interface
     mature_size: 'Medium',
     propagation_methods: ['Seeds', 'Cuttings'],
     common_issues: []
@@ -128,7 +125,6 @@ const determineWaterRequirement = (watering: any): "Low" | "Moderate" | "High" =
 };
 
 const calculateWaterAmount = (watering: any): number => {
-  // Default to 50ml if no specific guidance
   if (!watering) return 50;
   
   const waterReq = determineWaterRequirement(watering);
@@ -164,6 +160,5 @@ const detectDisease = (suggestion: any): DiseaseData | undefined => {
     treatments: suggestion.disease_details.treatment || [],
     symptoms: suggestion.disease_details.symptoms || [],
     prevention: suggestion.disease_details.prevention || [],
-    // Removed 'affected_parts' as it's not in the DiseaseData interface
   };
 };
