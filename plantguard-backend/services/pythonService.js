@@ -9,6 +9,12 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+// Create model directory if it doesn't exist
+const modelDir = path.join(__dirname, '..', 'model');
+if (!fs.existsSync(modelDir)) {
+  fs.mkdirSync(modelDir, { recursive: true });
+}
+
 const runPlantDiagnosis = (plantId, callback) => {
   const scriptPath = path.join(__dirname, '..', 'plantguard_ai.py');
   if (!/^[a-zA-Z0-9_]+$/.test(plantId)) {
@@ -44,4 +50,30 @@ const analyzeImage = (imagePath, callback) => {
   });
 };
 
-module.exports = { runPlantDiagnosis, analyzeImage };
+const trainModel = (callback) => {
+  const scriptPath = path.join(__dirname, '..', 'plantguard_ai.py');
+  
+  console.log('Starting model training...');
+  exec(`python3 ${scriptPath} --train`, (error, stdout, stderr) => {
+    if (error) {
+      console.error('Training error:', error);
+      return callback(error, null);
+    }
+    
+    try {
+      const result = JSON.parse(stdout);
+      callback(null, result);
+    } catch (err) {
+      console.error('Error parsing training result:', err);
+      callback(err, null);
+    }
+  });
+};
+
+// Check if the model exists
+const checkModelStatus = () => {
+  const modelPath = path.join(__dirname, '..', 'model', 'plant_disease_model.h5');
+  return fs.existsSync(modelPath);
+};
+
+module.exports = { runPlantDiagnosis, analyzeImage, trainModel, checkModelStatus };

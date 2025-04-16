@@ -1,9 +1,10 @@
+
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
-const { runPlantDiagnosis, analyzeImage } = require('../services/pythonService');
+const { runPlantDiagnosis, analyzeImage, trainModel, checkModelStatus } = require('../services/pythonService');
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
@@ -32,6 +33,34 @@ const upload = multer({
     }
     cb(null, true);
   }
+});
+
+// Check model status
+router.get('/model/status', (req, res) => {
+  const modelExists = checkModelStatus();
+  res.json({
+    model_loaded: modelExists,
+    ready_for_analysis: modelExists
+  });
+});
+
+// Route for training the model
+router.post('/model/train', (req, res) => {
+  trainModel((err, result) => {
+    if (err) {
+      console.error("Training error:", err);
+      return res.status(500).json({ 
+        error: 'Model training failed', 
+        details: err.message 
+      });
+    }
+    
+    res.json({
+      status: 'success',
+      message: 'Model training complete',
+      details: result
+    });
+  });
 });
 
 // Route for plant ID lookup
