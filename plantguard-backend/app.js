@@ -1,31 +1,17 @@
-
 const express = require('express');
 const cors = require('cors');
-const analyzeRoutes = require('./routes/analyze');
+const analyzeRoute = require('./routes/analyze');
 
-// Initialize express app
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use('/analyze-image', analyzeRoute);
 
-// Serve static files (if needed)
-app.use(express.static('public'));
-
-// Routes
-app.use('/api', analyzeRoutes);
-
-// Default route
 app.get('/', (req, res) => {
-  res.send('PlantGuard Analysis API is running');
+  res.send("🌿 PlantGuard Backend is Running!");
 });
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`🌱 Server listening at http://localhost:${PORT}`);
 });
-
-module.exports = app;
