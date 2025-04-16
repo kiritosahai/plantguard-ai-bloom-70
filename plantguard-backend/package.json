@@ -1,4 +1,4 @@
-npm install express cors
+
 {
   "name": "plantguard-backend",
   "version": "1.0.0",
@@ -9,8 +9,7 @@ npm install express cors
   },
   "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "multer": "^1.4.5-lts.1"
   }
 }
-//   "devDependencies": {
-//     "@types/express": "^4.17.21",  
