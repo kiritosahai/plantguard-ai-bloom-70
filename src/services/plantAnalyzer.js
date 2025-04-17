@@ -1,73 +1,53 @@
-
 import { plantDatabase, diseaseDatabase } from "@/data/plantsData";
 
 export const analyzeImage = async (imageFile) => {
   try {
-    // Convert image file to base64
-    const base64Image = await fileToBase64(imageFile);
+    const formData = new FormData();
+    formData.append('plant_image', imageFile);
     
-    const response = await fetch('https://api.plant.id/v2/identify', {
+    const response = await fetch('http://localhost:3000/analyze/image', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Api-Key': 'YOUR_PLANT_ID_API_KEY' // Replace with your API key
-      },
-      body: JSON.stringify({
-        images: [base64Image],
-        modifiers: ["crops_fast", "similar_images"],
-        plant_language: "en",
-        plant_details: [
-          "common_names",
-          "url",
-          "name_authority",
-          "wiki_description",
-          "taxonomy",
-          "synonyms",
-          "watering"
-        ],
-        disease_details: [
-          "common_names",
-          "description",
-          "treatment",
-          "classification"
-        ]
-      })
+      body: formData
     });
 
     if (!response.ok) {
-      throw new Error('Plant identification failed');
+      console.error('Server response error:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('Server error details:', errorText);
+      throw new Error(`Plant identification failed with status: ${response.status}`);
     }
 
     const data = await response.json();
+    console.log('Analysis response:', data);
     
-    if (!data.suggestions || data.suggestions.length === 0) {
-      return { plant_detected: false };
+    // Handle the server response
+    if (data.error) {
+      console.error('Server reported error:', data.error);
+      throw new Error(data.error);
     }
-
-    const bestMatch = data.suggestions[0];
-    const plantDetails = mapToPlantData(bestMatch);
-    const diseaseDetails = detectDisease(bestMatch);
-
+    
+    // If we have a proper analysis result
     return {
-      plant_detected: true,
-      species: plantDetails.species,
-      common_name: plantDetails.common_name,
-      water_requirement: determineWaterRequirement(bestMatch.plant_details?.watering),
-      water_amount_ml_per_day: calculateWaterAmount(bestMatch.plant_details?.watering),
-      disease_detected: !!diseaseDetails,
-      disease_name: diseaseDetails?.disease_name,
-      disease_details: diseaseDetails,
-      plant_details: plantDetails,
-      confidence: bestMatch.probability
+      plant_detected: data.plant_detected || false,
+      species: data.species || 'Unknown',
+      common_name: data.common_name || data.species || 'Unknown Plant',
+      water_requirement: data.plant_details?.water_requirement || 'Moderate',
+      water_amount_ml_per_day: data.plant_details?.water_amount_ml_per_day || 50,
+      disease_detected: data.disease_detected || false,
+      disease_name: data.disease_name || null,
+      disease_details: data.disease_details || null,
+      plant_details: data.plant_details || null,
+      confidence: data.confidence || 0.8,
+      image_path: data.image_path ? `http://localhost:3000/uploads/${data.image_path}` : null
     };
   } catch (error) {
     console.error('Error analyzing image:', error);
-    return { plant_detected: false };
+    throw error;
   }
 };
 
 // Helper function to convert File to base64
-const fileToBase64 = (file) => {
+export const fileToBase64 = (file) => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);

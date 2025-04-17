@@ -1,4 +1,3 @@
-
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -37,10 +36,16 @@ const upload = multer({
 
 // Check model status
 router.get('/model/status', (req, res) => {
-  const modelExists = checkModelStatus();
-  res.json({
-    model_loaded: modelExists,
-    ready_for_analysis: modelExists
+  checkModelStatus((err, result) => {
+    if (err) {
+      console.error("Status check error:", err);
+      return res.status(500).json({ 
+        error: 'Status check failed', 
+        details: err.message 
+      });
+    }
+    
+    res.json(result);
   });
 });
 
@@ -78,12 +83,13 @@ router.post('/image', upload.single('plant_image'), (req, res) => {
     return res.status(400).json({ error: 'No image uploaded' });
   }
   
+  console.log('File uploaded:', req.file);
   const imagePath = req.file.path;
   
   analyzeImage(imagePath, (err, result) => {
     if (err) {
       console.error("Analysis error:", err);
-      return res.status(500).json({ error: 'Image analysis failed' });
+      return res.status(500).json({ error: 'Image analysis failed', details: err.message });
     }
     
     // Add the image path to the result

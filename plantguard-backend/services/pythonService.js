@@ -39,8 +39,34 @@ const analyzeImage = (imagePath, callback) => {
     return callback(new Error('Image file not found'), null);
   }
   
-  exec(`python3 ${scriptPath} "${imagePath}"`, (error, stdout, stderr) => {
-    if (error) return callback(error, null);
+  // Add quotes around the path to handle spaces
+  exec(`python3 "${scriptPath}" "${imagePath}"`, (error, stdout, stderr) => {
+    if (error) {
+      console.error("Python execution error:", error);
+      console.error("Python stderr:", stderr);
+      return callback(error, null);
+    }
+    
+    try {
+      console.log("Python output:", stdout);
+      const result = JSON.parse(stdout);
+      callback(null, result);
+    } catch (err) {
+      console.error("JSON parse error:", err);
+      callback(err, null);
+    }
+  });
+};
+
+const checkModelStatus = (callback) => {
+  const scriptPath = path.join(__dirname, '..', 'plantguard_ai.py');
+  
+  exec(`python3 "${scriptPath}" --status`, (error, stdout, stderr) => {
+    if (error) {
+      console.error("Status check error:", error);
+      return callback(error, null);
+    }
+    
     try {
       const result = JSON.parse(stdout);
       callback(null, result);
@@ -54,7 +80,7 @@ const trainModel = (callback) => {
   const scriptPath = path.join(__dirname, '..', 'plantguard_ai.py');
   
   console.log('Starting model training...');
-  exec(`python3 ${scriptPath} --train`, (error, stdout, stderr) => {
+  exec(`python3 "${scriptPath}" --train`, (error, stdout, stderr) => {
     if (error) {
       console.error('Training error:', error);
       return callback(error, null);
@@ -71,9 +97,9 @@ const trainModel = (callback) => {
 };
 
 // Check if the model exists
-const checkModelStatus = () => {
+const checkModelStatus2 = () => {
   const modelPath = path.join(__dirname, '..', 'model', 'plant_disease_model.h5');
   return fs.existsSync(modelPath);
 };
 
-module.exports = { runPlantDiagnosis, analyzeImage, trainModel, checkModelStatus };
+module.exports = { runPlantDiagnosis, analyzeImage, trainModel, checkModelStatus, checkModelStatus2 };

@@ -7,7 +7,13 @@ const analyzeRoute = require('./routes/analyze');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors());
+// Configure CORS to allow frontend requests
+app.use(cors({
+  origin: '*', // In production, replace with specific origin
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Serve static files from the uploads directory
@@ -38,4 +44,5 @@ app.listen(PORT, () => {
   console.log(`- Check status at http://localhost:${PORT}/status`);
   console.log(`- Check model status at http://localhost:${PORT}/analyze/model/status`);
   console.log(`- To train the model: POST to http://localhost:${PORT}/analyze/model/train`);
+  console.log(`- To analyze an image: POST to http://localhost:${PORT}/analyze/image`);
 });

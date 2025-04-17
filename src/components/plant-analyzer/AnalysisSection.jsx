@@ -14,8 +14,18 @@ const AnalysisSection = ({
   const { toast } = useToast();
 
   const handleAnalyze = async () => {
+    if (!selectedImage) {
+      toast({
+        title: "No image selected",
+        description: "Please select an image to analyze",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setIsAnalyzing(true);
     try {
+      // Convert base64 to blob/file
       const imageBase64 = selectedImage;
       const byteString = atob(imageBase64.split(',')[1]);
       const mimeString = imageBase64.split(',')[0].split(':')[1].split(';')[0];
@@ -26,15 +36,21 @@ const AnalysisSection = ({
         ia[i] = byteString.charCodeAt(i);
       }
       
+      // Create a File object
       const file = new File([ab], "plant-image.jpg", { type: mimeString });
       
-      const result = await analyzeImage(file);
+      console.log("Sending file for analysis:", file);
       
+      // Call the backend API
+      const result = await analyzeImage(file);
+      console.log("Analysis result:", result);
+      
+      // Map the result to our expected format
       const mappedResult = {
         confidence: result.confidence || 0,
         plant: result.plant_details ? {
-          species: result.plant_details.species || '',
-          common_name: result.plant_details.common_name || '',
+          species: result.species || '',
+          common_name: result.common_name || '',
           description: result.plant_details.description || '',
           water_requirement: result.plant_details.water_requirement,
           water_amount_ml_per_day: result.plant_details.water_amount_ml_per_day,
@@ -46,7 +62,7 @@ const AnalysisSection = ({
           common_issues: result.plant_details.common_issues
         } : undefined,
         disease: result.disease_details ? {
-          disease_name: result.disease_details.disease_name || '',
+          disease_name: result.disease_name || '',
           description: result.disease_details.description || '',
           symptoms: result.disease_details.symptoms || [],
           treatments: result.disease_details.treatments || [],
@@ -61,12 +77,12 @@ const AnalysisSection = ({
         description: `Identified as ${mappedResult.plant?.common_name || mappedResult.disease?.disease_name} with ${(mappedResult.confidence * 100).toFixed(1)}% confidence`,
       });
     } catch (error) {
+      console.error("Analysis error:", error);
       toast({
         title: "Analysis failed",
-        description: "Could not analyze the image. Please try again.",
+        description: error.message || "Could not analyze the image. Please try again.",
         variant: "destructive",
       });
-      console.error("Analysis error:", error);
     } finally {
       setIsAnalyzing(false);
     }
