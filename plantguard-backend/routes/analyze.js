@@ -1,3 +1,4 @@
+
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
@@ -96,9 +97,6 @@ router.post('/image', upload.single('plant_image'), (req, res) => {
     result.image_path = req.file.filename;
     
     res.json(result);
-    
-    // Clean up: You can choose to delete the uploaded file or keep it
-    // fs.unlink(imagePath, () => {}); // Uncomment to delete after processing
   });
 });
 

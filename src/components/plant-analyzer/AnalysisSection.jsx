@@ -74,7 +74,7 @@ const AnalysisSection = ({
       
       toast({
         title: "Analysis complete",
-        description: `Identified as ${mappedResult.plant?.common_name || mappedResult.disease?.disease_name} with ${(mappedResult.confidence * 100).toFixed(1)}% confidence`,
+        description: `Identified as ${result.common_name || result.disease_name || 'Plant'} with ${(result.confidence * 100).toFixed(1)}% confidence`,
       });
     } catch (error) {
       console.error("Analysis error:", error);

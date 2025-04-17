@@ -20,12 +20,18 @@ const runPlantDiagnosis = (plantId, callback) => {
   if (!/^[a-zA-Z0-9_]+$/.test(plantId)) {
     return callback(new Error('Invalid plantId'), null);
   }
-  exec(`python3 ${scriptPath} ${plantId}`, (error, stdout, stderr) => {
-    if (error) return callback(error, null);
+  exec(`python3 "${scriptPath}" ${plantId}`, (error, stdout, stderr) => {
+    if (error) {
+      console.error("Python execution error:", error);
+      console.error("Python stderr:", stderr);
+      return callback(error, null);
+    }
+    
     try {
       const result = JSON.parse(stdout);
       callback(null, result);
     } catch (err) {
+      console.error("JSON parse error:", err);
       callback(err, null);
     }
   });
@@ -38,6 +44,8 @@ const analyzeImage = (imagePath, callback) => {
   if (!fs.existsSync(imagePath)) {
     return callback(new Error('Image file not found'), null);
   }
+  
+  console.log(`Executing: python3 "${scriptPath}" "${imagePath}"`);
   
   // Add quotes around the path to handle spaces
   exec(`python3 "${scriptPath}" "${imagePath}"`, (error, stdout, stderr) => {
@@ -96,10 +104,4 @@ const trainModel = (callback) => {
   });
 };
 
-// Check if the model exists
-const checkModelStatus2 = () => {
-  const modelPath = path.join(__dirname, '..', 'model', 'plant_disease_model.h5');
-  return fs.existsSync(modelPath);
-};
-
-module.exports = { runPlantDiagnosis, analyzeImage, trainModel, checkModelStatus, checkModelStatus2 };
+module.exports = { runPlantDiagnosis, analyzeImage, trainModel, checkModelStatus };
