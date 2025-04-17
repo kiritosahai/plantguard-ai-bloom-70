@@ -20,15 +20,574 @@
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
     
+    <!-- Tailwind CSS via CDN (for styling without build step) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'plantguard-green': '#43A047',
+              'plantguard-green-dark': '#2E7D32',
+              'plantguard-green-light': '#66BB6A',
+            },
+            animation: {
+              'float': 'float 6s ease-in-out infinite',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              }
+            },
+          }
+        }
+      }
+    </script>
+    
     <!-- Font preloading -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+      .leaf-pattern {
+        background-color: #ffffff;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath d='M54.627 17.373c-4.686-4.687-12.284-4.687-16.97 0-4.686 4.686-4.686 12.284 0 16.97 4.686 4.686 12.284 4.686 16.97 0 4.687-4.686 4.687-12.284 0-16.97zm-8.485 8.485c-1.172 1.171-3.071 1.171-4.243 0-1.171-1.172-1.171-3.071 0-4.243 1.172-1.171 3.071-1.171 4.243 0 1.171 1.172 1.171 3.071 0 4.243z' fill='%2343a047' fill-opacity='0.04'/%3E%3C/svg%3E");
+      }
+      .plant-shadow {
+        position: relative;
+      }
+      .plant-shadow:after {
+        content: '';
+        position: absolute;
+        bottom: -10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 20px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        filter: blur(8px);
+      }
+      .animate-float {
+        animation: float 6s ease-in-out infinite;
+      }
+    </style>
   </head>
+  <body class="bg-white text-gray-800">
+    <div id="root">
+      <!-- Navigation Bar -->
+      <header class="w-full py-4 px-4 sm:px-6 lg:px-8 border-b bg-white">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center space-x-4">
+            <a href="/" class="flex items-center space-x-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 2s.5 2.25.5 4-.5 4-.5 4 2.25-.5 4-.5 4 .5 4 .5-.5 2.25-.5 4 .5 4 .5 4-2.25-.5-4-.5-4 .5-4 .5-.5-2.25-.5-4 .5-4 .5-4-2.25.5-4 .5-4-.5-4-.5.5-2.25.5-4-.5-4-.5-4 2.25.5 4 .5 4-.5 4-.5Z"></path>
+              </svg>
+              <span class="text-xl font-serif font-semibold">PlantGuard</span>
+            </a>
+          </div>
 
-  <body>
-    <div id="root"></div>
+          <!-- Auth Buttons -->
+          <div class="flex items-center space-x-4">
+            <a href="/sign-in" class="text-sm font-medium hover:text-plantguard-green flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                <circle cx="12" cy="7" r="4"></circle>
+              </svg>
+              <span class="hidden sm:inline">Sign In</span>
+            </a>
+            <a href="/sign-up" class="text-sm bg-plantguard-green text-white px-4 py-2 rounded hover:bg-plantguard-green-dark transition-colors">
+              <span class="hidden sm:inline">Get Started</span>
+              <span class="sm:hidden">Sign Up</span>
+            </a>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="flex-grow">
+        <!-- Hero Section -->
+        <div class="leaf-pattern w-full">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div class="flex flex-col lg:flex-row items-center">
+              <div class="w-full lg:w-1/2 mb-10 lg:mb-0">
+                <div>
+                  <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+                    Your Personal Plant Health Guardian
+                  </h1>
+                  <p class="text-lg text-gray-600 mb-8 max-w-lg">
+                    Identify plant diseases, get care recommendations, and monitor environmental conditions with our AI-powered platform.
+                  </p>
+                  <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="#diagnosis" class="bg-plantguard-green hover:bg-plantguard-green-dark text-white font-medium py-3 px-6 rounded-md text-center">
+                      Try Plant Diagnosis
+                    </a>
+                    <a href="#features" class="border border-gray-300 hover:border-plantguard-green hover:text-plantguard-green font-medium py-3 px-6 rounded-md transition-colors text-center">
+                      Explore Features
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="w-full lg:w-1/2 flex justify-center lg:justify-end">
+                <!-- Plant Hero Image -->
+                <div class="relative w-full max-w-md">
+                  <div class="w-full aspect-square relative plant-shadow">
+                    <svg
+                      width="100%"
+                      height="100%"
+                      viewBox="0 0 512 512"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="animate-float"
+                    >
+                      <!-- Plant pot -->
+                      <path
+                        d="M160 352H352L384 448H128L160 352Z"
+                        fill="#8D6E63"
+                        stroke="#6D4C41"
+                        stroke-width="8"
+                      />
+                      
+                      <ellipse
+                        cx="256"
+                        cy="352"
+                        rx="96"
+                        ry="16"
+                        fill="#6D4C41"
+                      />
+                      
+                      <!-- Plant base -->
+                      <path
+                        d="M256 352C256 352 224 256 256 192C288 256 256 352 256 352Z"
+                        fill="#43A047"
+                        stroke="#2E7D32"
+                        stroke-width="4"
+                      />
+                      
+                      <!-- Plant leaves -->
+                      <path
+                        d="M256 320C256 320 352 288 384 208C288 240 256 320 256 320Z"
+                        fill="#66BB6A"
+                        stroke="#43A047"
+                        stroke-width="4"
+                      />
+                      
+                      <path
+                        d="M256 320C256 320 160 288 128 208C224 240 256 320 256 320Z"
+                        fill="#66BB6A"
+                        stroke="#43A047"
+                        stroke-width="4"
+                      />
+                      
+                      <path
+                        d="M256 256C256 256 288 192 352 160C304 208 256 256 256 256Z"
+                        fill="#81C784"
+                        stroke="#43A047"
+                        stroke-width="4"
+                      />
+                      
+                      <path
+                        d="M256 256C256 256 224 192 160 160C208 208 256 256 256 256Z"
+                        fill="#81C784"
+                        stroke="#43A047"
+                        stroke-width="4"
+                      />
+                      
+                      <path
+                        d="M256 224C256 224 256 160 224 96C272 144 256 224 256 224Z"
+                        fill="#4CAF50"
+                        stroke="#2E7D32"
+                        stroke-width="4"
+                      />
+                      
+                      <path
+                        d="M256 192C256 192 288 144 320 96C272 144 256 192 256 192Z"
+                        fill="#81C784"
+                        stroke="#43A047"
+                        stroke-width="4"
+                      />
+                      
+                      <path
+                        d="M256 192C256 192 224 144 192 96C240 144 256 192 256 192Z"
+                        fill="#81C784"
+                        stroke="#43A047"
+                        stroke-width="4"
+                      />
+                      
+                      <!-- Small decorative details -->
+                      <circle cx="290" cy="260" r="6" fill="#AED581" />
+                      <circle cx="220" cy="280" r="6" fill="#AED581" />
+                      <circle cx="270" cy="220" r="6" fill="#AED581" />
+                    </svg>
+                  </div>
+                  <div class="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-40 h-8 bg-black/10 blur-md rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Features Section -->
+        <section id="features" class="py-16 bg-gray-50">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl font-bold mb-4">Smart Plant Care Features</h2>
+              <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+                Our AI-powered platform provides comprehensive tools to monitor and maintain your plants' health.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <!-- Feature 1 -->
+              <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <div class="w-12 h-12 bg-plantguard-green-light/20 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Disease Diagnosis</h3>
+                <p class="text-gray-600">
+                  Upload photos of your plants and our AI will identify diseases with 95% accuracy, providing treatment recommendations.
+                </p>
+              </div>
+
+              <!-- Feature 2 -->
+              <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <div class="w-12 h-12 bg-plantguard-green-light/20 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Species Identification</h3>
+                <p class="text-gray-600">
+                  Identify over 10,000 plant species and varieties with just a photo, including care instructions and growth tips.
+                </p>
+              </div>
+
+              <!-- Feature 3 -->
+              <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                <div class="w-12 h-12 bg-plantguard-green-light/20 rounded-full flex items-center justify-center mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20"></path>
+                    <path d="M2 5h20"></path>
+                    <path d="M21 15h-3.5a2.5 2.5 0 1 1 0-5H21"></path>
+                    <path d="M9 15H5.5a2.5 2.5 0 1 0 0 5H9"></path>
+                  </svg>
+                </div>
+                <h3 class="text-xl font-semibold mb-2">Environmental Monitoring</h3>
+                <p class="text-gray-600">
+                  Connect your smart devices to track light, humidity, and temperature conditions for optimal plant growth.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Plant Diagnosis Section -->
+        <section id="diagnosis" class="py-16">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row items-center gap-8">
+              <!-- Benefits info -->
+              <div class="w-full lg:w-1/2">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                  AI-Powered Plant Disease Detection
+                </h2>
+                <p class="text-lg text-gray-600 mb-6">
+                  Upload a photo of your plant and our advanced AI will identify the species, 
+                  diagnose any potential issues, and provide tailored care recommendations.
+                </p>
+                <ul class="space-y-3 mb-8">
+                  <li class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>Early detection of 1,000+ plant diseases</span>
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>Instant species identification</span>
+                  </li>
+                  <li class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span>Personalized treatment recommendations</span>
+                  </li>
+                </ul>
+                <p class="text-sm text-gray-500">
+                  Our AI model has been trained on millions of plant images to ensure accuracy 
+                  for 10,000+ plant species and varieties.
+                </p>
+              </div>
+
+              <!-- Upload section -->
+              <div class="w-full lg:w-1/2 bg-white rounded-xl shadow-sm overflow-hidden border">
+                <div class="p-8 text-center flex flex-col items-center justify-center h-96 bg-gray-50">
+                  <div class="mb-4 p-4 rounded-full bg-plantguard-green/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#43A047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                      <circle cx="12" cy="13" r="3"></circle>
+                    </svg>
+                  </div>
+                  <p class="mb-4 font-medium">
+                    Get an instant plant diagnosis
+                  </p>
+                  <p class="text-sm text-gray-500 mb-6">Choose an option below</p>
+                  
+                  <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="#" class="bg-plantguard-green hover:bg-plantguard-green-dark text-white px-4 py-2 rounded flex items-center justify-center gap-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"></path>
+                        <circle cx="12" cy="13" r="3"></circle>
+                      </svg>
+                      Take Photo
+                    </a>
+                    <a href="#" class="border border-gray-300 hover:border-plantguard-green hover:text-plantguard-green px-4 py-2 rounded flex items-center justify-center gap-2 transition-colors">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="17 8 12 3 7 8"></polyline>
+                        <line x1="12" y1="3" x2="12" y2="15"></line>
+                      </svg>
+                      Upload Image
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="py-16 bg-plantguard-green relative overflow-hidden">
+          <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col lg:flex-row lg:items-center">
+              <div class="lg:w-2/3 mb-10 lg:mb-0">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">
+                  Ready to transform your plant care experience?
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span class="text-white">AI-powered disease detection</span>
+                  </div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span class="text-white">Personalized care recommendations</span>
+                  </div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span class="text-white">Environmental monitoring</span>
+                  </div>
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    <span class="text-white">Community support & expertise</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lg:w-1/3 lg:pl-12">
+                <div class="bg-white rounded-xl p-6 shadow-xl">
+                  <h3 class="text-xl font-bold mb-2">Get Started Today</h3>
+                  <p class="text-gray-600 mb-6">
+                    Join thousands of plant lovers who have transformed their gardening experience.
+                  </p>
+                  <div class="space-y-4">
+                    <a href="/sign-up" class="block w-full bg-plantguard-green text-white py-3 px-4 rounded text-center hover:bg-plantguard-green-dark transition-colors">
+                      Start Free Trial
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-2 inline-block">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </a>
+                    <a href="#pricing" class="block w-full border border-gray-300 bg-white text-gray-800 py-3 px-4 rounded text-center hover:border-plantguard-green hover:text-plantguard-green transition-colors">
+                      View Pricing Plans
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Background decoration -->
+          <div class="absolute top-0 right-0 w-1/3 h-full bg-plantguard-green-dark/30 transform skew-x-12"></div>
+          <div class="absolute bottom-0 left-0 w-1/4 h-1/3 bg-plantguard-green-dark/20 rounded-full blur-2xl"></div>
+        </section>
+
+        <!-- Email Subscribe Section -->
+        <section class="py-16 bg-gray-50">
+          <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-plantguard-green-light/10 p-6 rounded-lg">
+              <h3 class="text-lg font-medium mb-2 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                Subscribe to our Newsletter
+              </h3>
+              <p class="text-sm text-gray-600 mb-4">
+                Get plant care tips, disease alerts, and seasonal advice delivered to your inbox.
+              </p>
+              <form class="flex flex-col sm:flex-row gap-2 mb-4">
+                <input type="email" placeholder="Enter your email" required class="flex-grow border border-gray-300 px-3 py-2 rounded focus:outline-none focus:ring-2 focus:ring-plantguard-green">
+                <button type="submit" class="bg-plantguard-green hover:bg-plantguard-green-dark text-white font-medium py-2 px-4 rounded whitespace-nowrap">
+                  Subscribe
+                </button>
+              </form>
+              
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <div class="flex flex-col sm:flex-row sm:justify-between gap-3">
+                  <div>
+                    <h4 class="font-medium text-sm mb-1">Contact Us</h4>
+                    <div class="flex items-center text-sm text-gray-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                      </svg>
+                      <a href="mailto:sahai.kuahgar@plantguard.com">sahai.kuahgar@plantguard.com</a>
+                    </div>
+                  </div>
+                  <div>
+                    <h4 class="font-medium text-sm mb-1">Customer Support</h4>
+                    <div class="flex items-center text-sm text-gray-600">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                      </svg>
+                      <a href="tel:+918976543210">+91 8976 543 210</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer class="bg-gray-800 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div>
+              <div class="flex items-center space-x-2 mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#66BB6A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 2s.5 2.25.5 4-.5 4-.5 4 2.25-.5 4-.5 4 .5 4 .5-.5 2.25-.5 4 .5 4 .5 4-2.25-.5-4-.5-4 .5-4 .5-.5-2.25-.5-4 .5-4 .5-4-2.25.5-4 .5-4-.5-4-.5.5-2.25.5-4-.5-4-.5-4 2.25.5 4 .5 4-.5 4-.5Z"></path>
+                </svg>
+                <span class="text-xl font-serif font-semibold text-white">PlantGuard</span>
+              </div>
+              <p class="mb-4">AI-powered plant health detection and personalized care assistant.</p>
+              <div class="flex space-x-4">
+                <a href="#" class="text-gray-400 hover:text-white">
+                  <span class="sr-only">Facebook</span>
+                  <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white">
+                  <span class="sr-only">Twitter</span>
+                  <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white">
+                  <span class="sr-only">Instagram</span>
+                  <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white">
+                  <span class="sr-only">YouTube</span>
+                  <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+            <div>
+              <h3 class="text-white font-semibold mb-4">Product</h3>
+              <ul class="space-y-2">
+                <li><a href="#" class="hover:text-white">Features</a></li>
+                <li><a href="#" class="hover:text-white">Pricing</a></li>
+                <li><a href="#" class="hover:text-white">Plant Encyclopedia</a></li>
+                <li><a href="#" class="hover:text-white">Disease Database</a></li>
+                <li><a href="#" class="hover:text-white">Smart Devices</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-white font-semibold mb-4">Resources</h3>
+              <ul class="space-y-2">
+                <li><a href="#" class="hover:text-white">Care Guides</a></li>
+                <li><a href="#" class="hover:text-white">Blog</a></li>
+                <li><a href="#" class="hover:text-white">Community</a></li>
+                <li><a href="#" class="hover:text-white">API Documentation</a></li>
+                <li><a href="#" class="hover:text-white">Help Center</a></li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="text-white font-semibold mb-4">Company</h3>
+              <ul class="space-y-2">
+                <li><a href="#" class="hover:text-white">About Us</a></li>
+                <li><a href="#" class="hover:text-white">Careers</a></li>
+                <li><a href="#" class="hover:text-white">Press</a></li>
+                <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="border-t border-gray-700 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+            <p>&copy; 2025 PlantGuard. All rights reserved.</p>
+            <p class="mt-4 md:mt-0">Made with ❤️ for plant lovers</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-    <script type="module" src="/src/main.tsx"></script>
+    
+    <script>
+      // Simple JavaScript for interactions
+      document.addEventListener('DOMContentLoaded', function() {
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.offsetTop - 80,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+      });
+    </script>
   </body>
 </html>
